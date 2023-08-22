@@ -14,6 +14,7 @@ export default function AddToCart({ onClick, className }) {
       />
 
       <h5>Add to cart</h5>
+      
     </div>
   );
 }

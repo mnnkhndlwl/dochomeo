@@ -1,171 +1,201 @@
 h1 {
-    position: relative;
-    padding: 0;
-    margin: 0;
-    font-family: "Raleway", sans-serif;
-    font-weight: 300;
-    font-size: 40px;
-    color: #080808;
-    -webkit-transition: all 0.4s ease 0s;
-    -o-transition: all 0.4s ease 0s;
-    transition: all 0.4s ease 0s;
-  }
-  
-  h1 span {
-    display: block;
-    font-size: 0.5em;
-    line-height: 1.3;
-  }
-  h1 em {
-    font-style: normal;
-    font-weight: 600;
-  }
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-family: "Raleway", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  color: #080808;
+  -webkit-transition: all 0.4s ease 0s;
+  -o-transition: all 0.4s ease 0s;
+  transition: all 0.4s ease 0s;
+}
 
-  .three h1 {
-    font-size: 28px;
-    font-weight: 500;
-    letter-spacing: 0;
-    line-height: 1.5em;
-    padding-bottom: 15px;
-    position: relative;
-  }
-  .three h1:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 5px;
-    width: 55px;
-    background-color: #111;
-  }
-  .three h1:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 2px;
-    height: 1px;
-    width: 95%;
-    max-width: 255px;
-    background-color: #333;
-  }
+h1 span {
+  display: block;
+  font-size: 0.5em;
+  line-height: 1.3;
+}
+h1 em {
+  font-style: normal;
+  font-weight: 600;
+}
 
-  .doctorsection {
-    padding: 20px;
-    &__wrapper {
-      margin-bottom: remCal(60);
-      margin-top: 20px;
-      //padding: 30px;
-      // padding: emCal(16, 50);
+.three h1 {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5em;
+  padding-bottom: 15px;
+  position: relative;
+}
+.three h1:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+  width: 55px;
+  background-color: #080808;
+}
+.three h1:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  height: 1px;
+  width: 95%;
+  max-width: 255px;
+  background-color: #333;
+}
+
+.doctorsection {
+  &__wrapper {
+    margin-bottom: remCal(60);
+    // margin-top: 20px;
+    padding: 5px;
+    // margin-right: 10px;
+    display: flex;
+    //flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    //flex-wrap: wrap;
+
+    //padding: 30px;
+    // padding: emCal(16, 50);
+
+    @media screen and (max-device-width: 992px) {
+      flex-wrap: wrap;
+      justify-content: center;
     }
-  
-    .slick-arrow {
-      @extend .btn;
-      @include link($color: setShadeColor(dark), $fsz: emCal(16, 30));
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 3;
-      padding: 0;
-      border-radius: 50%;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-  
-      &:hover {
-        color: black;
-        transform: translateY(-50%) scale(1.1);
-        // background-color: rgba(0, 0, 0, 0.5);
-        // border-radius: 50%;
-        // background-color: white;
-        // border-radius: 50%;
-      }
+
+  }
+
+  .slick-arrow {
+    @extend .btn;
+    @include link($color: setShadeColor(dark), $fsz: emCal(16, 30));
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    padding: 0;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      color: black;
+      transform: translateY(-50%) scale(1.1);
+      // background-color: rgba(0, 0, 0, 0.5);
+      // border-radius: 50%;
+      // background-color: white;
+      // border-radius: 50%;
+    }
+    &.slick-next {
+      right: emCal(30, 0);
+    }
+    &.slick-prev {
+      left: emCal(30, 0);
+    }
+    @include mq(md) {
       &.slick-next {
-        right: emCal(30, 0);
+        right: emCal(30, 15);
       }
       &.slick-prev {
-        left: emCal(30, 0);
-      }
-      @include mq(md) {
-        &.slick-next {
-          right: emCal(30, 15);
-        }
-        &.slick-prev {
-          left: emCal(30, 15);
-        }
+        left: emCal(30, 15);
       }
     }
-    .qr-container {
-      width: max(20%, 20rem);
-      background-color: var(--white);
-      text-align: center;
-      margin-right: 10px;
-      margin: 10px;
-      border-radius: 20px;
-      gap: 0.2rem;
-      box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
-      -webkit-box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
-      -moz-box-shadow: -2px 10px 24px -11px rgba(0, 0, 0, 0.62);
-    }
+  }
+  .qr-container {
+    //width: max(20%, 20rem);
+    // width: max-content;
+    width: auto;
+    padding: 18px 18px;
+    background-color: var(--white);
+    text-align: center;
+    align-content: center;
+   // margin-right: 20px;
+   // margin: 10px;
+    position: relative;
+    border-radius: 10px;
+    gap: 0.2rem;
+    box-shadow: 0px 3px 15px 0px rgba(17, 30.999999999999996, 98.00000000000001, 0.1);
+    transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+  }
+
+  /** Image Block **/
+  .img-block img {
+    display: block;
+    height: 250px;
+    // width: auto;
+    border-radius: 10px;
+    margin-top: 1.2rem;
+    cursor: pointer;
+  }
+  /** Info Block **/
+  .info-block {
+    position: realtive;
+    // z-index: 101;
+    width: max-content;
+    align-self: center;
+  }
+  h4 {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--dark-blue);
+    font-weight: 500;
+  }
+
+  .info-block p {
     
-    /** Image Block **/
-    .img-block img {
-      display: block;
-      height: 300px;
-      width: 300px;
-      margin: auto;
-      border-radius: 10px;
-      margin-top: 1.2rem;
-      cursor: pointer;
-    }
-    /** Info Block **/
-    .info-block {
-      position: relative;
-      margin-top: 30px;
-      padding: 1.2rem;
-    }
-    h4 {
-      font-size: 1.4rem;
-      color: var(--dark-blue);
-    }
-    
-    .info-block p {
-      padding: 1rem;
-      word-spacing: 1px;
-      color: var(--grayish-blue);
+    word-spacing: 1px;
+    color: var(--grayish-blue);
+  }
+
+  .rectangle {
+    width: 170px;
+    // height: 50px;
+    position: absolute;
+    padding: 30px 10px 30px;
+    // z-index: 100;
+    top: 58%;
+    left: 35px;
+   // font-weight: bold;
+    //background-color: #3498db; /* Blue background */
+    background-color: #04888d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 10px;
+    gap: 10px;
+    align-items: center;
+    color: white;
+
+    .text1{
+      font-size: 13px;
     }
 
-    .rectangle {
-      width: 230px;
-      height: 75px;
-      position: absolute;
-      top: 28%;
-      left: 11%;
-      background-color: #3498db; /* Blue background */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      border-radius: 5%;
-      gap: 10px;
-      align-items: center;
-      color: white;
+    .text2 {
+      font-size: 11px;
+      font-weight: 400;
+    }
   }
-    
-  }
-  
+
   .button-24 {
-    background: #FF4742;
-    border: 1px solid #FF4742;
+    background: #005b3c;
+    border: 1px solid #005b3c;
     border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
     box-sizing: border-box;
     margin-top: 10px;
-    color: #FFFFFF;
+    color: #ffffff;
     cursor: pointer;
     display: inline-block;
-    font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
-    font-size: 16px;
-    font-weight: 800;
+    font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
     line-height: 16px;
     min-height: 40px;
     outline: 0;
@@ -177,15 +207,30 @@ h1 {
     -webkit-user-select: none;
     touch-action: manipulation;
     vertical-align: middle;
+    transition: 0.5s;
   }
-  
+
   .button-24:hover,
   .button-24:active {
     background-color: initial;
     background-position: 0 0;
-    color: #FF4742;
+    color: #005b3c;
   }
-  
+
   .button-24:active {
-    opacity: .5;
+    opacity: 0.5;
   }
+}
+
+.doctorsection .img-block img{
+  margin-top: 0;
+}
+.info-block{
+  padding-bottom: 8px !important;
+}
+.doctorsection__wrapper{    margin-bottom: 3.75rem;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;}

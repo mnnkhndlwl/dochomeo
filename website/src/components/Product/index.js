@@ -78,7 +78,7 @@ function Product({ data, type, className }) {
     }
   };
 
-  console.log(data, baseUrl);
+  //console.log(data, baseUrl);
 
   return (
     <>
@@ -157,13 +157,13 @@ function Product({ data, type, className }) {
               <ReactTooltip id="wlIcon" type="dark" effect="solid">
                 <span>Add to Wishlist</span>
               </ReactTooltip>
-            </div> */}
+            </div>  */}
           </div>
           <div className="product__content">
             <div className="product__content__header">
               <h5 className="product-category">
-                {data?.product_name.slice(0, 30)}
-                {data?.product_name.length < 30 ? "" : "..."}
+                {data?.product_name?.slice(0, 20)}
+                {data?.product_name?.length < 20 ? "" : "..."}
               </h5>
               {/* <Rate currentRate={process.env.PUBLIC_URL + "/assets/images/med.webp"} /> */}
             </div>
@@ -173,17 +173,17 @@ function Product({ data, type, className }) {
               // as={`${process.env.PUBLIC_URL}/shop/product/${data.product_slug}`}
               as={`#`}
             >
-              <a className="product-name">{data.product_name}</a>
+              <a className="product-name">{data.product_name?.slice(0,22)}{data?.product_name?.length < 22 ? "" : "..."}</a>
             </Link>
             <div className="product__content__footer">
               <h5 className="product-price--main">
                 {data.discount
-                  ? formatCurrency(data.product_regular_price)
-                  : formatCurrency(data.product_regular_price)}
+                  ? formatCurrency(data?.product_regular_price)
+                  : formatCurrency(data?.product_regular_price)}
               </h5>
               {data.discount && (
                 <h5 className="product-price--discount">
-                  {formatCurrency(data.price)}
+                  {formatCurrency(data?.price)}
                 </h5>
               )}
               {data.variation && (

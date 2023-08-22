@@ -14,7 +14,8 @@ class MyDocument extends Document {
             name="Description"
             content="Eliah - React NextJs Beauty Salon & Cosmetic Shop Template"
           />
-          <link rel="icon" href="/fav.png" />
+          {/* <link rel="icon" href="/fav.png" /> */}
+          {/* <link rel="icon" href="/" /> */}
           <link
             href="https://kit-pro.fontawesome.com/releases/v5.13.0/css/pro.min.css"
             rel="stylesheet"

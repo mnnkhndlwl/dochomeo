@@ -73,10 +73,10 @@ export default function homepage1() {
   console.log(data);
 
   return (
-    <LayoutOne title="Homepage 1" data={sliderData} className="-style-1">
+    <LayoutOne title="Dochomoeo" data={sliderData} className="-style-1">
     <MenuFive />
     {/* <ProductCategories data={brandsData}/> */}
-    <CategoriesTwo data={brandsData}/>
+    {/* <CategoriesTwo data={brandsData}/> */}
       <SliderTwo data={data} className="-style-1" showDots />
       {/* <IntroductionOne data={introductionOneData} /> */}
       {/* <IntroductionTwo data={introductionTwoData} /> */}
@@ -90,9 +90,14 @@ export default function homepage1() {
           brandsData={brandsData.slice(0,4)}
           data={product}
         />
+        {/* <div className="container">
+             <div className="three">
+                <h1>Our Doctorss</h1>
+             </div>
+        </div> */}
       <DoctorSection data={doctorsData}/>
       {/* </div> */}
-      {/* <TestimonialOne data={testimonialOneData} />  */}
+      <TestimonialOne data={testimonialOneData} /> 
       {/* <TeamOne data={teamOneData} />  */}
       {/* <CTAOne /> */}
     </LayoutOne>

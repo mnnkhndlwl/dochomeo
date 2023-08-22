@@ -94,13 +94,14 @@
       }
     }
     img {
+      background-color: set-color(red);
       @include imgCenter(
-        $height: emCal(16, 50),
-        $width: emCal(16, 50),
-        $type: contain
+        $height: emCal(10, 50),
+        $width: emCal(10, 50),
+        // $type: contain
       );
       margin-right: emCal(16, 25);
-      filter: brightness(5);
+      //filter: brightness(3);
       transition: $transition;
     }
     h3,

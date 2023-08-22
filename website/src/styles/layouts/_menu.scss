@@ -14,6 +14,7 @@
     align-items: center;
     position: relative;
     justify-content: space-between;
+    
     &__logo {
       img {
         @include imgCenter(auto, 10em);
@@ -77,7 +78,7 @@
               position: absolute;
               top: 50%;
               left: -100%;
-              background-color: #f2646061;
+              background-color: #04888d50;
               height: emCal(15, 8);
               width: 100%;
 
@@ -524,7 +525,7 @@
 //   flex-wrap: wrap;
 //   position: relative;
 //   justify-content: center;
-  
+
 //   nav>ul {
 //     display: flex;
 //   }
@@ -534,7 +535,7 @@
 //     list-style: none;
 //     color: white;
 //   }
-  
+
 //   .megamenu{
 //     position: absolute;
 //     top: 120%;
@@ -574,10 +575,15 @@
 .menufiveHeader {
   width: 100%;
   background: black;
+  
+  /* For Mobile Phones Portrait or Landscape View */
+  @media screen and (max-device-width: 992px) {
+    display: none;
+  }
 }
 
 .menufiveContainer {
-  width: 90vw;
+  width: 60vw;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
@@ -615,7 +621,9 @@
   }
 
   .megamenuItems {
-    flex-basis: calc(33.33% - 2%); /* Adjust flex-basis for responsive columns */
+    flex-basis: calc(
+      33.33% - 2%
+    ); /* Adjust flex-basis for responsive columns */
     margin: 1%;
     font-family: sans-serif;
   }

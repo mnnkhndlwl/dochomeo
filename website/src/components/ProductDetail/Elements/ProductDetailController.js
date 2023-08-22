@@ -10,6 +10,7 @@ import {
   getAvaiableQuantityInCart,
   checkProductInWishList,
 } from "../../../common/shopUtils";
+import { EnquiryForm } from "../../form/EnquiryForm";
 
 export default function ProductDetailController({
   data,
@@ -21,6 +22,7 @@ export default function ProductDetailController({
   const [quantity, setQuantity] = useState();
   const cartState = useSelector((state) => state.cartReducer);
   const wishlistState = useSelector((state) => state.wishlistReducer);
+  const [show, setShow] = useState(false);
 
   const avaiableProduct = getAvaiableQuantityInCart(
     cartState,
@@ -28,22 +30,41 @@ export default function ProductDetailController({
     data.quantity
   );
   return (
-    <div className="product-detail__controler">
-      <Quantity
-        className="-border -round"
-        getQuantity={(q) => {
-          setQuantity(q), getQuantity(q);
-        }}
-        maxValue={avaiableProduct}
-      />
-      <AddToCart
-        className={`-dark ${classNames({
-          "-disable": quantity < avaiableProduct || data.quantity < 1,
-        })}`}
-        onClick={onAddToCart}
-      />
-      <div className="product-detail__controler__actions">
-        <div data-tip data-for="add-wishlist">
+    <>
+      <div className="product-detail__controler">
+        <Quantity
+          className="-border -round"
+          getQuantity={(q) => {
+            setQuantity(q), getQuantity(q);
+          }}
+          maxValue={avaiableProduct}
+        />
+        <div className="flex-btn-product-detail">
+          <AddToCart
+            className={`-dark ${classNames({
+              "-disable": quantity < avaiableProduct || data.quantity < 1,
+            })}`}
+            onClick={onAddToCart}
+          />
+          <div
+            className={`add-to-cart `}
+            onClick={() => {
+              setShow(true);
+            }}
+          >
+            <Button
+              height="3.85em"
+              width="3.85em"
+              color="red"
+              className="-round"
+              action="#"
+              content={<i className="fas fa-info"></i>}
+            />
+            <h5>Bulk Enquiry</h5>
+          </div>
+        </div>
+        <div className="product-detail__controler__actions">
+          {/* <div data-tip data-for="add-wishlist">
           <Button
             action="#"
             height="3.85em"
@@ -55,11 +76,13 @@ export default function ProductDetailController({
             color="white"
             content={<i className="fas fa-heart"></i>}
           />
-        </div>
-        <ReactTooltip id="add-wishlist" type="dark" effect="solid">
+        </div> */}
+          {/* <ReactTooltip id="add-wishlist" type="dark" effect="solid">
           <span>Add to wishlist</span>
-        </ReactTooltip>
+        </ReactTooltip> */}
+        </div>
       </div>
-    </div>
+      <EnquiryForm show={show} setShow={setShow} data={data}/>
+    </>
   );
 }

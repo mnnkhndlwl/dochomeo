@@ -5,6 +5,7 @@ import ClientOnlyPortal from "../../../common/ClientOnlyPortal";
 import NavigatorMobile from "./NavigatorMobile";
 import SocialIcons from "../../Other/SocialIcons";
 import Select from "../../Control/Select";
+import SearchBox from "./SearchBox";
 
 export default function MobileNavSidebar({ showMobileNav, setShowMobileNav }) {
   const [searchInput, setSearchInput] = useState("");
@@ -21,24 +22,30 @@ export default function MobileNavSidebar({ showMobileNav, setShowMobileNav }) {
         >
           <div className="navigation-sidebar">
             <div className="search-box">
-              <form>
+            <SearchBox showSearch={true} />
+              {/* <form>
                 <input
                   type="text"
                   placeholder="What are you looking for?"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                 />
-                <button>
+                <button
+                type="submit"
+                onSubmit={() => {
+                    window.location.replace(`/shop/search/${searchInput}`);
+                  }}
+                >
                   <img
                     src="/assets/images/header/search-icon.png"
                     alt="Search icon"
                   />
                 </button>
-              </form>
+              </form> */}
             </div>
             <NavigatorMobile />
             <div className="navigation-sidebar__footer">
-              <Select
+              {/* <Select
                 options={["USD", "VND", "YEN"]}
                 getValue={(val) => setCurrency(val)}
                 className="-borderless"
@@ -47,7 +54,7 @@ export default function MobileNavSidebar({ showMobileNav, setShowMobileNav }) {
                 options={["ENG", "VI", "JP"]}
                 getValue={(val) => setLanguage(val)}
                 className="-borderless"
-              />
+              /> */}
               <a className="navigation-sidebar__footer__auth">Login/Register</a>
               <SocialIcons />
             </div>

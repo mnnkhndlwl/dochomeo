@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useForm } from "react-hook-form";
-
 import outsideClickHandle from "../../../common/ElementOutsideClick";
 
 export default function SearchBox({ showSearch, setShowSearch }) {
@@ -12,6 +11,7 @@ export default function SearchBox({ showSearch, setShowSearch }) {
   });
   function onSubmit(data) {
     console.log(data);
+    window.location.replace(`/shop/search/${data.search}`)
   }
   return (
     <CSSTransition

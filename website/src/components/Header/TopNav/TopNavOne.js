@@ -16,7 +16,7 @@ export default function TopNavOne({ container }) {
         <div className="top-nav__wrapper">
           <SocialIcons className="-white" />
           <p className="top-nav__wrapper__promo">
-            Free shipping on international orders of $120+
+            Free delivery & shipping on every orders
           </p>
           <div className="top-nav__wrapper__selectors">
             {/* selec

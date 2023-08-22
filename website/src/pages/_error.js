@@ -28,7 +28,7 @@ export default function () {
                     </button>
                   </form>
                   <Button
-                    action={process.env.PUBLIC_URL + "/homepages/homepage1"}
+                    action={process.env.PUBLIC_URL + "/"}
                     className="-underline"
                     color="transparent"
                     content="Back to homepage"

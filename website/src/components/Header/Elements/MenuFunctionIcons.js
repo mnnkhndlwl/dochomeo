@@ -46,9 +46,9 @@ export default function MenuFunctionIcons(props) {
             />
           </a>
         )}
-        {/* {!hide.includes("cart") && (
+        {!hide.includes("cart") && (
           <>
-            <Link href={process.env.PUBLIC_URL + "/shop/wishlist"}>
+            {/* <Link href={process.env.PUBLIC_URL + "/shop/wishlist"}>
               <a className="menu-icon -wishlist">
                 <img
                   src={
@@ -61,7 +61,7 @@ export default function MenuFunctionIcons(props) {
                   alt="Wishlist icon"
                 />
               </a>
-            </Link>
+            </Link> */}
             <div className="menu__cart">
               <a
                 href="#"
@@ -100,7 +100,7 @@ export default function MenuFunctionIcons(props) {
               <div className="bar"></div>
             </a>
           </>
-        )} */}
+        )}
       </div>
       {/* Search input */}
       <SearchBox showSearch={showSearch} setShowSearch={setShowSearch} />

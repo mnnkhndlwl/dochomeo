@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import LayoutFour from "../../components/Layout/LayoutFour";
+import LayoutOne from "../../components/Layout/LayoutOne";
 import Quantity from "../../components/Control/Quantity";
 import Button from "../../components/Control/Button";
 import { Breadcrumb, BreadcrumbItem } from "../../components/Other/Breadcrumb";
@@ -33,7 +34,7 @@ export default function () {
     return toast.error("Product removed from cart");
   };
   return (
-    <LayoutFour title="Cart">
+    <LayoutOne title="Cart">
       <Breadcrumb title="Shopping cart">
         <BreadcrumbItem name="Home" />
         <BreadcrumbItem name="Shop" />
@@ -46,7 +47,7 @@ export default function () {
               <h3>No product in cart</h3>
               <Button
                 color="dark"
-                action={process.env.PUBLIC_URL + "/shop/fullwidth-4col"}
+                action={process.env.PUBLIC_URL + "/"}
                 content="Shopping now"
               />
             </div>
@@ -126,7 +127,7 @@ export default function () {
                   </table>
                 </div>
                 <div className="cart__table__footer">
-                  <Link href={process.env.PUBLIC_URL + "/shop/fullwidth-4col"}>
+                  <Link href={process.env.PUBLIC_URL + "/"}>
                     <a>
                       <i className="fal fa-long-arrow-left"></i>
                       Continue Shopping
@@ -144,7 +145,7 @@ export default function () {
               <div className="cart__total">
                 <div className="row">
                   <div className="col-12 col-md-8">
-                    <div className="cart__total__discount">
+                    {/* <div className="cart__total__discount">
                       <p>Enter coupon code. It will be applied at checkout.</p>
                       <div className="input-validator">
                         <form onSubmit={handleSubmit(onSubmit)}>
@@ -162,7 +163,7 @@ export default function () {
                           </span>
                         )}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="col-12 col-md-4">
                     <div className="cart__total__content">
@@ -196,7 +197,7 @@ export default function () {
           )}
         </div>
       </div>
-      <InstagramTwo />
-    </LayoutFour>
+      {/* <InstagramTwo /> */}
+    </LayoutOne>
   );
 }

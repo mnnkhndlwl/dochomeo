@@ -18,7 +18,8 @@ export default function ShopHeader({
         <div className="shop-header__view__icon">
           <a
             href={process.env.PUBLIC_URL + "#"}
-            className={view === "grid" ? "active" : ""}
+            className="active"
+            // className={view === "grid" ? "active" : ""}
             onClick={(e) => {
               e.preventDefault();
               setView("grid");

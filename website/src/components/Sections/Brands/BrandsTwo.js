@@ -37,17 +37,17 @@ import { PrevArrow, NextArrow } from "../../Other/SliderArrow";
 
 export default function BrandsTwo({ data }) {
   const settings = {
-    pauseOnHover: true,
+    //pauseOnHover: true,
     //className: "",
     dots: false,
     infinite: true,
-    autoplay: false,
-    focusOnSelect: true,
-    autoplaySpeed: 4000,
+    autoplay: true,
+    //focusOnSelect: true,
+    //autoplaySpeed: 4000,
     speed: 1000,
     cssEase: "linear",
-    slidesToShow: 6,
-    slidesToScroll: 2,
+    slidesToShow: 5,
+    slidesToScroll: 1,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
    // dotsClass: "slider-dots container",
@@ -72,7 +72,7 @@ export default function BrandsTwo({ data }) {
   };
 
   return (
-    <div>
+    <div className="container">
       <div className="brand-two">
         <div className="two">
           <h1>
@@ -83,15 +83,15 @@ export default function BrandsTwo({ data }) {
         <div className="brand-two__wrapper">
        
           <Slider {...settings}>
-            {data.map((brand) => {
+            {data.slice(8,13).map((brand) => {
               return (
-                <section className="card">
+              
                   <img
-                    src="https://download.logo.wine/logo/Dabur/Dabur-Logo.wine.png"
+                    src={brand.main_category_image.image_url}
                     alt="Yummix cup cake"
                     className="card-img"
                   />
-                </section>
+               
               );
             })}
           </Slider>

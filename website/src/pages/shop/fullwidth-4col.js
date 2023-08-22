@@ -3,7 +3,7 @@ import Paginator from "react-hooks-paginator";
 
 import { Breadcrumb, BreadcrumbItem } from "../../components/Other/Breadcrumb";
 import { getProductbyFilter } from "../../common/productSelect";
-import LayoutFour from "../../components/Layout/LayoutOne";
+import LayoutOne from "../../components/Layout/LayoutOne";
 import productData from "../../data/products.json";
 import ShopProducts from "../../components/Shop/ShopProducts";
 import ShopHeader from "../../components/Shop/ShopHeader";
@@ -21,7 +21,7 @@ export default function () {
     setCurrentData(sortedProduct.slice(offset, offset + pageLimit));
   }, [offset, currentSort]);
   return (
-    <LayoutFour title="Shop Fullwidth 4 columns" container="wide">
+    <LayoutOne title="Shop Fullwidth 4 columns" container="wide">
       <Breadcrumb title="Shop">
         <BreadcrumbItem name="Home" />
         <BreadcrumbItem name="Shop" current />
@@ -51,7 +51,7 @@ export default function () {
           />
         </div>
       </div>
-      <InstagramTwo />
-    </LayoutFour>
+      {/* <InstagramTwo /> */}
+    </LayoutOne>
   );
 }

@@ -10,7 +10,7 @@ export default function MenuOne({ container }) {
     <div className="menu -style-1">
       <div className={renderContainer(container)}>
         <div className="menu__wrapper">
-          <Link href="/homepages/homepage1">
+          <Link href="/">
             <a className="menu__wrapper__logo">
               <img src="/assets/images/logo.png" alt="Logo" />
             </a>
@@ -18,6 +18,7 @@ export default function MenuOne({ container }) {
           <Navigator />
           <MenuFunctionIcons />
         </div>
+        
       </div>
     </div>
   );

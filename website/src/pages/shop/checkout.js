@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 
 import LayoutFour from "../../components/Layout/LayoutFour";
+import LayoutOne from "../../components/Layout/LayoutOne";
 import { Breadcrumb, BreadcrumbItem } from "../../components/Other/Breadcrumb";
 import InstagramTwo from "../../components/Sections/Instagram/InstagramTwo";
 import { formatCurrency, formatSingleNumber } from "../../common/utils";
@@ -19,7 +20,7 @@ export default function () {
   const onSubmit = (data) => console.log(data);
   const onCouponSubmit = (data) => console.log(data);
   return (
-    <LayoutFour title="Checkout">
+    <LayoutOne title="Checkout">
       <Breadcrumb title="Checkout">
         <BreadcrumbItem name="Home" />
         <BreadcrumbItem name="Shop" />
@@ -54,7 +55,7 @@ export default function () {
                         </span>
                       )}
                     </div>
-                    <label className="checkbox-label" htmlFor="subcribe-news">
+                    {/* <label className="checkbox-label" htmlFor="subcribe-news">
                       <input
                         type="checkbox"
                         id="subcribe-news"
@@ -62,7 +63,7 @@ export default function () {
                         ref={register}
                       />
                       Keep me up to dateon news and exclusive offers
-                    </label>
+                    </label> */}
                   </div>
                   <div className="checkout__form__shipping">
                     <h5 className="checkout-title">Shipping address</h5>
@@ -207,7 +208,7 @@ export default function () {
                         </div>
                       </div>
                     </div>
-                    <label className="checkbox-label" htmlFor="save">
+                    {/* <label className="checkbox-label" htmlFor="save">
                       <input
                         type="checkbox"
                         id="save"
@@ -215,7 +216,7 @@ export default function () {
                         ref={register()}
                       />
                       Save this infomation for next time
-                    </label>
+                    </label> */}
                   </div>
                 </div>
               </form>
@@ -225,7 +226,7 @@ export default function () {
                 <div className="col-12 col-md-6 col-lg-12 ml-auto">
                   <div className="checkout__total">
                     <h5 className="checkout-title">Your order</h5>
-                    <form
+                    {/* <form
                       className="checkout__total__coupon"
                       onSubmit={couponHandleSubmit(onCouponSubmit)}
                     >
@@ -244,7 +245,7 @@ export default function () {
                         )}
                       </div>
                       <button className="btn -dark">Apply</button>
-                    </form>
+                    </form> */}
                     <div className="checkout__total__price">
                       <h5>Product</h5>
                       <table>
@@ -282,7 +283,7 @@ export default function () {
                           </tbody>
                         </table>
                       </div>
-                      <div className="checkout__total__price__payment">
+                      {/* <div className="checkout__total__price__payment">
                         <label className="checkbox-label" htmlFor="payment">
                           <input
                             type="checkbox"
@@ -301,7 +302,7 @@ export default function () {
                           />
                           PayPal
                         </label>
-                      </div>
+                      </div> */}
                     </div>
                     <button
                       className="btn -red"
@@ -316,7 +317,7 @@ export default function () {
           </div>
         </div>
       </div>
-      <InstagramTwo />
-    </LayoutFour>
+      {/* <InstagramTwo /> */}
+    </LayoutOne>
   );
 }

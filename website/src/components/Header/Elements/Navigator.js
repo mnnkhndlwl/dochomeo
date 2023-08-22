@@ -5,7 +5,7 @@ import menuData from "../../../data/header/navigation.json";
 
 export default function Navigator({ disableSubmenu, className }) {
   function renderMenu() {
-    return menuData.map((item, index) => {
+    return menuData.slice(0,5).map((item, index) => {
       // if (item.title === "Home") {
       //   return (
       //     <li className="relative" key={index}>

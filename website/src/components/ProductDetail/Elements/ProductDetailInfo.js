@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import classNames from "classnames";
+import Button from "../../Control/Button";
 
 import { formatCurrency } from "../../../common/utils";
 import { addToCart } from "../../../redux/actions/cartActions";
@@ -70,14 +71,14 @@ export default function ProductDetailInfo({ data, onReviewSubmit, hideTab }) {
           {/* <li>
             Reward point: <span>{data.product_reword_point}</span>
           </li> */}
-          <li>
+          {/* <li>
             Availability:
             {data.quantity > 0 ? (
               <span className="in-stock"> In Stock</span>
             ) : (
               <span className="out-stock"> Out Stock</span>
             )}
-          </li>
+          </li> */}
         </ul>
         {data.variation && (
           <div className="product-detail__colors">
@@ -94,16 +95,17 @@ export default function ProductDetailInfo({ data, onReviewSubmit, hideTab }) {
             ))} */}
           </div>
         )}
-        {/* <ProductDetailController
+        <ProductDetailController
           data={data}
           getQuantity={getQuantity}
           onAddToCart={onAddToCart}
           onAddToWishList={onAddToWishList}
           color={otherColor}
-        /> */}
-        <button className="btn -red">
+        />
+        {/* <button className="btn -red">
           Make an enquiry
-        </button>
+        </button> */}
+   
       </div>
       {!hideTab && (
         <>

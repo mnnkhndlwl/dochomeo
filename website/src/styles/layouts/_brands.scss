@@ -39,8 +39,9 @@
 }
 
 .brand-two {
-  padding: 20px;
+  // padding: 20px;
   &__wrapper {
+    align-items: center;
     margin-bottom: remCal(20);
     margin-top: 20px;
     //padding: 30px;
@@ -69,6 +70,7 @@
       // background-color: white;
       // border-radius: 50%;
     }
+   
     &.slick-next {
       right: emCal(30, 0);
     }
@@ -117,10 +119,15 @@
 
   // }
 
-  .card {
-    width: 250px;
-    height: 200px;
-    margin: auto;
+  // .card {
+  //   width: 250px;
+  //   height: 200px;
+  //   margin: 10px;
+  // }
+  .card-img {
+    align-items: center;
+    // width: 250px;
+    // height: 180px;
   }
   .product-title {
     /*This text shadow format is per as google fonts requirements*/

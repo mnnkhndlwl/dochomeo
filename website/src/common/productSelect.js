@@ -1,11 +1,12 @@
 //get product
 export const getProducts = (products, category, type, limit) => {
-  category = category && category.toLowerCase() === "all" ? "" : category;
+  category = category && category === "all" ? "" : category;
   const finalProducts = category
     ? products.filter(
-        (product) => product.category.toLowerCase() === category.toLowerCase()
+        (product) => product.product_main_category === category
       )
     : products;
+  console.log(finalProducts);
   if (type && type === "new") {
     const newProducts = finalProducts.filter((product) => product.new);
     return newProducts.slice(0, limit ? limit : newProducts.length);
@@ -107,5 +108,6 @@ export const getProductbyFilter = (
   } else {
     sortedProduct = getProductBySort(products, sortType);
   }
+  console.log(sortedProduct);
   return sortedProduct.slice(0, limit || products.length);
 };

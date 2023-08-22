@@ -21,7 +21,7 @@ export default function ShopProducts(props) {
     autoplaySpeed: 4000,
     speed: 1000,
     cssEase: "linear",
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
@@ -49,8 +49,8 @@ export default function ShopProducts(props) {
   console.log(data);
   return (
     <>
-      <div>
-        {brandsData.map((brand) => {
+      <div className="container">
+        {brandsData?.map((brand) => {
           return (
             <div className="productsTwo">
               <div className="two">
@@ -118,3 +118,4 @@ export default function ShopProducts(props) {
 //     </div>
 //   );
 // }
+
