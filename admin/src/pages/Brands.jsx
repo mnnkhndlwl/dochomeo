@@ -296,7 +296,7 @@ const EnhancedTableToolbar = (props) => {
                       />
                     </ListItemIcon>
                     <ListItemText
-                      primary="Delete Category"
+                      primary="Delete Brand"
                       primaryTypographyProps={{ variant: "body2" }}
                     />
                   </MenuItem>
