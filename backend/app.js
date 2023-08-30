@@ -17,6 +17,7 @@ const Order_Routes = require("./routes/order_routes");
 const Products_Routes = require("./routes/products_routes");
 const User_Routes = require("./routes/user_routes");
 const Banners_Routes = require("./routes/banners_routes");
+const Mobilebanners_Routes = require("./routes/Mobilebanner_routes");
 const Doctor_Routes = require("./routes/doctor_routes");
 const DoctorEnquiry_Routes = require("./routes/doctor_enquiry_routes");
 const WholeSaleEnquiry_Routes = require("./routes/wholesale_enquiry_routes");
@@ -51,6 +52,7 @@ app.use("/api", Doctor_Routes);
 app.use('/api',DoctorEnquiry_Routes);
 app.use('/api',WholeSaleEnquiry_Routes);
 app.use("/api", Brands_Routes);
+app.use("/api", Mobilebanners_Routes);
 
 // app.use("/api",UploadImage_Routes);
 
