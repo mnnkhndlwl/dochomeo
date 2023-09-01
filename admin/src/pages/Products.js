@@ -165,12 +165,12 @@ const headCells = [
   //   label: 'Gst',
   // },
 
-  // {
-  //   id: 'quantity',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Quantity',
-  // },
+  {
+    id: 'quantity',
+    numeric: false,
+    disablePadding: false,
+    label: 'Quantity',
+  },
   {
     id: "price",
     numeric: false,
@@ -1542,7 +1542,7 @@ export default function EnhancedTable() {
                       <TableCell  style={{textTransform:'capitalize'}} align="center">{row.product_sale_price}</TableCell> */}
                         {/* <TableCell style={{textTransform:'capitalize'}}  align="center">{row.product_gst}</TableCell> */}
 
-                        {/* <TableCell style={{textTransform:'capitalize'}}  align="left">{row.original_quantity}</TableCell> */}
+                        <TableCell style={{textTransform:'capitalize'}}  align="left">{row.quantity}</TableCell>
                         <TableCell
                           style={{ textTransform: "capitalize" }}
                           align="left"

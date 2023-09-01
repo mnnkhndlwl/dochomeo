@@ -4,6 +4,7 @@ const Utils = require("../utils/Utils");
 const order_status = require("../utils/configs/order_status");
 const { v4: uuidv4 } = require("uuid");
 const generateOrderId = require("order-id")("key");
+const Products_Schema = require("../modals/Products");
 
 const Users_Schema = require("../modals/Users");
 
@@ -42,7 +43,11 @@ const createNewOrder = async (req, res) => {
       customer_gst: req.body?.customer_gst,
       customer_business: req.body?.customer_business,
     });
+
+    await updateProductQuantities(req.body.products);
+
     const result = await create.save();
+
     res.status(200).send({
       status: true,
       message: "order created successfully !!",
@@ -51,6 +56,27 @@ const createNewOrder = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong !!");
+  }
+};
+
+const updateProductQuantities = async (cart) => {
+  try {
+    for (const cartItem of cart) {
+      const product = await Products_Schema.findOne({
+        _id: cartItem.productID,
+      });
+
+      if (product) {
+        // Decrease the product quantity based on the quantity ordered
+        product.quantity -= cartItem.cartQuantity;
+
+        // Save the updated product to MongoDB
+        await product.save();
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    // Handle errors here, you can log the error or send a response as needed
   }
 };
 

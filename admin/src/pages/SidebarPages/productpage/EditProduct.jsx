@@ -671,6 +671,27 @@ function EditProduct({ productId, handleClose }) {
                     <TextField type='number'  fullWidth className='product_form_input' id="outlined-basic" name='cartoon_total_products' value={productData?.cartoon_total_products} onChange={handleChange} placeholder=" Total Products In One Cartoon " variant="outlined" />
                     </div>
                     </div> */}
+                    <div className="flex" style={{ width: "100%", gap: "10px" }}>
+                  <div
+                    className="add_product_label_input"
+                    style={{ width: "100%" }}
+                  >
+                    <label htmlFor=""> Quantiy </label>
+                    <TextField
+                      required
+                      type="number"
+                      fullWidth
+                      className="product_form_input"
+                      id="outlined-basic"
+                      name="quantity"
+                      value={productData?.quantity}
+                      onChange={handleChange}
+                      placeholder="Product Quantity"
+                      variant="outlined"
+                    />
+                    
+                  </div>
+                  </div>
                 <div className="flex" style={{ width: "100%", gap: "10px" }}>
                   <div
                     className="add_product_label_input"

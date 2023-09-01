@@ -21,7 +21,7 @@ function AddProducts({ handleClose }) {
     product_main_category: "choose_main_category",
     product_category: "choose_category",
     product_subcategory: "choose_sub_category",
-    product_brand: "choose_your_brand"
+    product_brand: "choose_your_brand",
   });
   const [mainCategory, setMainCategory] = useState([]);
   const [brand, setBrand] = useState([]);
@@ -149,7 +149,7 @@ function AddProducts({ handleClose }) {
     await axios
       .post(
         `${process.env.REACT_APP_BACKEND_URL}/api/add/new/product`,
-        { ...productData, product_images: productsImageToFirebase },
+        { quantity : productData?.product_quantity ,...productData, product_images: productsImageToFirebase },
         { withCredential: true }
       )
       .then((res) => {
@@ -170,7 +170,7 @@ function AddProducts({ handleClose }) {
           product_variant: "",
           product_quantity: "",
           product_description: "",
-          product_brand:"product_brand",
+          product_brand: "product_brand",
           color: "",
           size: "",
           cartoon_total_products: "",
@@ -349,10 +349,7 @@ function AddProducts({ handleClose }) {
                       },
                     }}
                   >
-                  
-                    <MenuItem value="choose_brand">
-                      Choose your Brand
-                    </MenuItem>
+                    <MenuItem value="choose_brand">Choose your Brand</MenuItem>
                     {brand?.map((value, index) => (
                       <MenuItem
                         key={value._id}
@@ -469,6 +466,26 @@ function AddProducts({ handleClose }) {
                     </div>
                     </div> */}
 
+                <div className="flex" style={{ width: "100%", gap: "10px" }}>
+                  <div
+                    className="add_product_label_input"
+                    style={{ width: "100%" }}
+                  >
+                    <label htmlFor=""> Quantity </label>
+                    <TextField
+                      required
+                      type="number"
+                      fullWidth
+                      className="product_form_input"
+                      id="outlined-basic"
+                      name="product_quantity"
+                      value={productData?.product_quantity}
+                      onChange={handleChange}
+                      placeholder="Enter total product quantity"
+                      variant="outlined"
+                    />
+                  </div>
+                </div>
                 <div className="flex" style={{ width: "100%", gap: "10px" }}>
                   <div
                     className="add_product_label_input"
