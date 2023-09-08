@@ -460,7 +460,7 @@ export default function EnhancedTable() {
     console.log("VALUE FOR DELETE=>", value);
     await axios
       .delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/delete/order/by/id`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/deleteWholesale`,
         { data: value },
         { withCredentials: true }
       )
@@ -468,6 +468,7 @@ export default function EnhancedTable() {
         console.log(res);
         setOpenDeleteConfimModal(false);
         setRender((prev) => !prev);
+        window.location.reload();
         if (res?.data?.status) {
           setMessage((prev) => ({
             ...prev,

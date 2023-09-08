@@ -459,7 +459,7 @@ export default function EnhancedTable() {
     console.log("VALUE FOR DELETE=>", value);
     await axios
       .delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/delete/order/by/id`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/deleteDoctorEqu`,
         { data: value },
         { withCredentials: true }
       )
@@ -473,6 +473,7 @@ export default function EnhancedTable() {
             type: "success",
             message: "Enquiries Deleted Successfully !",
           }));
+          window.location.reload();
           setSnackbarOpen(true);
           setFilters((prev) => ({ ...prev, by_category: "all" }));
         }

@@ -62,7 +62,34 @@ const searchDoctorEnquiry = async (req, res) => {
   }
 };
 
+// DELETE Enquires
+const deleteEnquiries = async (req, res) => {
+  try {
+    if (req.body?.length) {
+      const deleteSelected = await DoctorEnquirySchema.deleteMany({
+        _id: {
+          $in: req.body,
+        },
+      });
+      if (!deleteSelected) {
+        return res
+          .status(200)
+          .send({ message: "Enquiries delete failed", status: false });
+      }
+      return res
+        .status(200)
+        .send({ message: "Enquiries delete success", status: true });
+    }
+
+    res.status(200).send({ message: "Enquiries delete failed", status: false });
+  } catch (err) {
+    console.log(err);
+    res.status(200).send({ message: "Enquiries delete failed", status: false });
+  }
+};
+
   exports.searchDoctorEnquiry = searchDoctorEnquiry;
   exports.addDoctorEnquiry = addDoctorEnquiry;
   exports.getDoctorEnquiries = getDoctorEnquiries;
+  exports.deleteEnquiries = deleteEnquiries;
   
