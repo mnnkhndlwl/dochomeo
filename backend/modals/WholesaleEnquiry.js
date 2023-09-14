@@ -18,6 +18,9 @@ const wholeSaleEnquirySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    quantity: {
+      type: Number,
+    },
     country: {
       type: String,
     },
