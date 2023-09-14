@@ -122,10 +122,10 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "",
+    id: "image",
     numeric: false,
     disablePadding: true,
-    label: "",
+    label: "Doc Image",
   },
   {
     id: "doc_code",
@@ -160,9 +160,15 @@ const headCells = [
   // },
   {
     id: "experience",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Experience",
+  },
+  {
+    id: "languages",
+    numeric: false,
+    disablePadding: false,
+    label: "languages",
   },
   {
     id: "time",
@@ -175,6 +181,12 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: "Status",
+  },
+  {
+    id: "price",
+    numeric: false,
+    disablePadding: false,
+    label: "Pricing",
   },
   // {
   //   id: 'action',
@@ -369,6 +381,7 @@ export default function EnhancedTable() {
   const [ordersCount, setOrdersCount] = useState(0);
   const [allDcotors, setAllDoctors] = useState();
   const [allOrders, setAllOrders] = useState();
+  const [lan,setLan] = useState([]);
   const [filters, setFilters] = useState({
     by_status: "all",
     recentDays: "All",
@@ -1025,7 +1038,13 @@ export default function EnhancedTable() {
                             padding="none"
                           >
                             {/* {row.order_id} */}
-                            {row.doctor_id}
+                            <div
+                              style={{
+                                textAlign: "center",
+                              }}
+                            >
+                              {row.doctor_id}
+                            </div>
                           </TableCell>
                           {/* <TableCell align="center">{convertDateForOrder(row.createdAt)}</TableCell> */}
                           <TableCell align="center">{row.name} </TableCell>
@@ -1041,6 +1060,23 @@ export default function EnhancedTable() {
                           <TableCell align="center">
                             {" "}
                             <p>{row.experience} Year</p>{" "}
+                          </TableCell>
+                          <TableCell align="center">
+                            <ul style={{
+                              textAlign:"left"
+                            }} >
+                              {
+                                // Assuming row.languages contains the string of languages
+                                row?.languages.length !== 0 &&
+                                row?.languages
+                                  .split(",")
+                                  .map((language) => {
+                                    return <>
+                                      <li>{language.trim()}</li>
+                                    </>
+                                  })
+                              }
+                            </ul>
                           </TableCell>
                           <TableCell align="center">
                             {/* <p style={{color:palette.primary.main,fontWeight:'600'}} > ₹ 199</p> */}
@@ -1084,16 +1120,35 @@ export default function EnhancedTable() {
       </Select>
       </FormControl>
                       </TableCell> */}
-                          <TableCell align="center" >
+                          <TableCell align="center">
+                            {/* <p style={{color:palette.primary.main,fontWeight:'600'}} > ₹ 199</p> */}
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                textAlign: "center",
+                                gap: 10,
+                              }}
+                            >
+                              <div>Video : ₹ {row.price?.video}</div>
+                              <div>Call : ₹ {row.price?.call}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell align="center">
                             {/* <AppRegistrationIcon style={{cursor:'pointer'}} fontSize='small'  /> */}
                             {/* <AppRegistrationIcon style={{cursor:'pointer'}} fontSize='small' onClick={()=>{setOrderIdForEdit(row._id); setDrawerEditOrders(true) }}  /> */}
-                            <Link to={`/dashboard/edit-doctor/${row._id}`} >
-                                <AppRegistrationIcon
-                                  style={{ cursor: "pointer",textDecoration : "none",color:"black" }}
-                                  fontSize="small"
-                                />
+                            <Link to={`/dashboard/edit-doctor/${row._id}`}>
+                              <AppRegistrationIcon
+                                style={{
+                                  cursor: "pointer",
+                                  textDecoration: "none",
+                                  color: "black",
+                                }}
+                                fontSize="small"
+                              />
                             </Link>
-                          
                           </TableCell>
                         </TableRow>
                       );

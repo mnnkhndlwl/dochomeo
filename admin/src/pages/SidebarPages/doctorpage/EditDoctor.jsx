@@ -30,7 +30,10 @@ function EditDoctor() {
     endTime: "",
     doctor_id: "",
     name: "",
+    video: 0,
+    call: 0,
     experience: 0,
+    languages: "",
     Specialization: "",
     image: "",
     description: "",
@@ -63,8 +66,11 @@ function EditDoctor() {
         setChangedData({
           startTime: res?.data.time.startTime,
           endTime: res?.data.time.endTime,
+          video: res?.data.price?.video,
+          call: res?.data.price?.call,
           doctor_id: res?.data.doctor_id,
           name: res?.data.name,
+          languages : res?.data?.languages,
           experience: res?.data.experience,
           Specialization: res?.data.Specialization,
           image: res?.data.image,
@@ -169,11 +175,16 @@ function EditDoctor() {
         startTime: changedData?.startTime,
         endTime: changedData?.endTime,
       },
+      price:{
+        video: changedData?.video,
+        call: changedData?.call,
+      },
+      languages: changedData?.languages,
       doctor_id: changedData?.doctor_id,
       name: changedData?.name,
       experience: changedData?.experience,
       Specialization: changedData?.Specialization,
-      image: productsImageToFirebase === [] ? changedData?.image : productsImageToFirebase[0],
+      image: productsImageToFirebase.length === 0 ? changedData?.image : productsImageToFirebase[0],
       description: changedData?.description,
     };
     console.log("form Data ==>", data);
@@ -574,6 +585,20 @@ function EditDoctor() {
                   />
                 </div>
                 <div className="add_product_label_input">
+                  <label htmlFor="languages"> Languages </label>
+                  <TextField
+                    required
+                    fullWidth
+                    className="product_form_input"
+                    id="outlined-basic"
+                    name="languages"
+                    value={changedData?.languages}
+                    onChange={handleChange}
+                    placeholder="Seperate languages by comma(,)"
+                    variant="outlined"
+                  />
+                </div>
+                <div className="add_product_label_input">
                   <label htmlFor=""> Doctor Experience </label>
                   <TextField
                     required
@@ -612,6 +637,33 @@ function EditDoctor() {
                     value={changedData?.endTime}
                     onChange={handleChange}
                     placeholder=" Doctor end Timing"
+                    variant="outlined"
+                  />
+                </div>
+                <div className="add_product_label_input">
+                  <label htmlFor=""> Doctor Pricing </label>
+                  <TextField
+                    required
+                    fullWidth
+                    className="product_form_input"
+                    id="outlined-basic"
+                    name="video"
+                    value={changedData?.video}
+                    onChange={handleChange}
+                    placeholder="Video Call price"
+                    variant="outlined"
+                  />
+                  <br />
+                  <br />
+                  <TextField
+                    required
+                    fullWidth
+                    className="product_form_input"
+                    id="outlined-basic"
+                    name="call"
+                    value={changedData?.call}
+                    onChange={handleChange}
+                    placeholder="Phone call price"
                     variant="outlined"
                   />
                 </div>
