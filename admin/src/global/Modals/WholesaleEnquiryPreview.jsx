@@ -84,6 +84,12 @@ function WholesaleEnquiryPreview(props) {
                   {props.data !== undefined ? props.data.createdAt : ""}{" "}
                 </span>{" "}
               </p>
+              <p className="enquiry-preview-detail">
+                Quantity :{" "}
+                <span className="enquiry-details-preview-content">
+                  {props.data !== undefined ? props.data?.quantity : ""}{" "}
+                </span>{" "}
+              </p>
               <p className="enquiry-preview-detail">Message : </p>
               <div className="enquiry-message-box">
                 {" "}
