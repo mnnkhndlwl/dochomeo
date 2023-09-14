@@ -32,6 +32,20 @@ const doctorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  languages: {
+    type: String,
+    default: ""
+  },
+  price: {
+    call: {
+      type: Number,
+      required: true,
+    },
+    video: {
+      type: Number,
+      required: true,
+    },
+  },
   time: {
     startTime: {
       type: String,

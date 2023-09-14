@@ -8,6 +8,8 @@ const addDoctors = async (req, res) => {
     name: req.body.name,
     experience: req.body.experience,
     Specialization: req.body.Specialization,
+    price: req.body.price,
+    languages: req.body.languages,
     image: req.body.image,
     description: req.body.description,
     time: req.body.time,
