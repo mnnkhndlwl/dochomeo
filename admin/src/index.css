@@ -216,6 +216,7 @@ body{background-color: #E9F1EF !important;}
     width: 65px;height: 65px; border-radius: 8px; padding: 2px;margin-right: 5px;margin-top: 5px;margin-bottom: 5px; border: 1px solid rgb(211, 211, 211);
 }
 .product-conatiner{
+    background-color: white;
     padding: 20px 100px;
 }
 .add-product-flex{

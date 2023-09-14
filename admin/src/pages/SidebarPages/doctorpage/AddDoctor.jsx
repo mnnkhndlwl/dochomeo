@@ -23,7 +23,10 @@ function AddDoctor({ handleClose }) {
     endTime: "",
     doctor_id: "",
     name: "",
-    experience: 0,
+    experience: "",
+    video: "",
+    call: "",
+    languages: "",
     Specialization: "",
     image: "",
     description: "",
@@ -150,6 +153,11 @@ function AddDoctor({ handleClose }) {
           experience: doctorData.experience,
           Specialization: doctorData.Specialization,
           description: doctorData.description,
+          languages: doctorData?.languages,
+          price: {
+            video: doctorData?.video,
+            call: doctorData?.call,
+          },
           availability: true,
           time: {
             startTime: doctorData.startTime,
@@ -174,6 +182,9 @@ function AddDoctor({ handleClose }) {
           doctor_id: "",
           name: "",
           experience: 0,
+          languages: "",
+          video: "",
+          call: "",
           Specialization: "",
           image: "",
           description: "",
@@ -326,6 +337,48 @@ function AddDoctor({ handleClose }) {
                     variant="outlined"
                   />
                 </div>
+                <div className="add_product_label_input">
+                  <label htmlFor="languages"> Languages </label>
+                  <TextField
+                    required
+                    fullWidth
+                    className="product_form_input"
+                    id="outlined-basic"
+                    name="languages"
+                    value={doctorData?.languages}
+                    onChange={handleChange}
+                    placeholder="Seperate languages by comma(,)"
+                    variant="outlined"
+                  />
+                </div>
+                <div className="add_product_label_input">
+                  <label htmlFor=""> Doctor Pricing </label>
+                  <TextField
+                    required
+                    fullWidth
+                    className="product_form_input"
+                    id="outlined-basic"
+                    name="video"
+                    value={doctorData?.video}
+                    onChange={handleChange}
+                    placeholder="Video Call price"
+                    variant="outlined"
+                  />
+                  <br />
+                  <br />
+                  <TextField
+                    required
+                    fullWidth
+                    className="product_form_input"
+                    id="outlined-basic"
+                    name="call"
+                    value={doctorData?.call}
+                    onChange={handleChange}
+                    placeholder="Phone call price"
+                    variant="outlined"
+                  />
+                </div>
+
                 <div className="add_product_label_input">
                   <label htmlFor=""> Doctor Timing </label>
                   <TextField
