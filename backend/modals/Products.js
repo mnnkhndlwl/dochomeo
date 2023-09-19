@@ -67,8 +67,8 @@ const Products_Schema = new mongoose.Schema(
     product_tag: {
       type: String,
     },
-    product_brand:{
-        type:String,
+    product_brand: {
+      type: String,
     },
     // shop_id:{
     //     type:String,
@@ -108,6 +108,28 @@ const Products_Schema = new mongoose.Schema(
     product_description: {
       type: String,
     },
+    review: [
+      {
+        userID: {
+          type: String,
+          required: true,
+        },
+        username: {
+          type: String,
+          required: true,
+          default: "user",
+        },
+        desc: {
+          type: String,
+          required: true,
+        },
+        rating: {
+          type: Number,
+          required: true,
+          default: 0
+        }
+      },
+    ],
     // product_status:{
     //     type:String,
     //     required:true,

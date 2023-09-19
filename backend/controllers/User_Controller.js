@@ -388,7 +388,7 @@ const verifyOTPRegLog = async (req, res) => {
     //   otp
     // );
 
-    const resp = await otp_service.verifyOtpForUser(phone_number, otp);
+   const resp = await otp_service.verifyOtpForUser(phone_number, otp);
 
     const isVerifyNumber = true;
 

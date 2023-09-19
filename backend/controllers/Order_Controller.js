@@ -111,6 +111,7 @@ const getAllOrdersByUserId = async (req, res) => {
     const token = verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
 
     const user = await Users_Schema.findById(token.id);
+    console.log(user);
 
     if (!user) {
       return res.send({
@@ -121,14 +122,12 @@ const getAllOrdersByUserId = async (req, res) => {
     // console.log(user);
 
     const allOrders = await Orders_Schema.find({
-      customer_id: user.user_id,
+      customer_id: user._id,
     }).sort({ createdAt: -1 });
 
-    res.status(200).send({
-      success: true,
-      message: "Orders Fetched",
-      allOrders: allOrders,
-    });
+    //console.log(allOrders);
+
+    res.status(200).send(allOrders);
   } catch (err) {
     console.log(err);
     res.status(500).send("something went wrong !!");

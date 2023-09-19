@@ -3,6 +3,100 @@ const Brands_Schema = require("../modals/Brands");
 const product_status = require("../utils/configs/product_status");
 const Utils = require("../utils/Utils");
 
+// Add a review to a product
+const addReview = async (req, res) => {
+  const { productId } = req.params;
+  const { jwt } = req.cookies;
+
+  try {
+    if (!jwt) {
+      return res.send({ message: "Please login" });
+    }
+
+    const userId = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
+    const { desc, rating,username } = req.body;
+
+    const product = await Products_Schema.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const newReview = {
+      userID: userId?.id,
+      username: username || "user",
+      desc,
+      rating,
+    };
+
+    product.review.push(newReview);
+    await product.save();
+
+    res.status(201).json({ message: "Review added successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// Delete a review from a product
+const deleteReview = async (req, res) => {
+  const { productId, reviewId } = req.params;
+
+  try {
+    const product = await Products_Schema.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const reviewIndex = product.review.findIndex(
+      (review) => review._id.toString() === reviewId
+    );
+
+    if (reviewIndex === -1) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    product.review.splice(reviewIndex, 1);
+    await product.save();
+
+    res.status(200).json({ message: "Review deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// Edit a review for a product
+const editReview = async (req, res) => {
+  const { productId, reviewId, desc } = req.body;
+
+  try {
+    const product = await Products_Schema.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const review = product.review.id(reviewId);
+
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    review.desc = desc;
+   // review.rating = rating;
+
+    await product.save();
+
+    res.status(200).json({ message: "Review edited successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // create new product
 
 const createProducts = async (req, res) => {
@@ -66,7 +160,7 @@ const getAllProducts = async (req, res) => {
       getProductsCount: getProductsCount,
       getAllProductStatus: product_status,
       categoryForFilter: categoryForFilter,
-      all_category_for_filter: all_category_for_filter
+      all_category_for_filter: all_category_for_filter,
     });
   } catch (err) {
     console.log(err);
@@ -462,3 +556,6 @@ exports.setNewArrivalProducts = setNewArrivalProducts;
 exports.removeNewArrivalProducts = removeNewArrivalProducts;
 exports.setTrendingProducts = setTrendingProducts;
 exports.removeTrendingProducts = removeTrendingProducts;
+exports.addReview = addReview;
+exports.deleteReview = deleteReview;
+exports.editReview = editReview;
