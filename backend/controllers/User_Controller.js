@@ -388,18 +388,18 @@ const verifyOTPRegLog = async (req, res) => {
     //   otp
     // );
 
-  //  const resp = await otp_service.verifyOtpForUser(phone_number, otp);
+    const resp = await otp_service.verifyOtpForUser(phone_number, otp);
 
-  //   const isVerifyNumber = true;
+     const isVerifyNumber = true;
 
-  //   console.log("Check Verified => ", isVerifyNumber);
+     console.log("Check Verified => ", isVerifyNumber);
 
-  //   if (resp.status === false) {
-  //     return res.status(203).send({
-  //       success: false,
-  //       message: "Invalid Otp !!!",
-  //     });
-  //   }
+     if (resp.status === false) {
+       return res.status(203).send({
+         success: false,
+         message: "Invalid Otp !!!",
+       });
+     }
 
     const token = await Utils.create_Jwt(
       { id: findUser._id, user_type: findUser.user_type },
