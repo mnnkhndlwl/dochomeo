@@ -25,7 +25,7 @@ function EditProduct({ productId, handleClose }) {
     product_main_category: "choose_main_category",
     product_category: "choose_category",
     product_subcategory: "choose_sub_category",
-    "product_brand" : "choose_your_brand"
+    product_brand: "choose_your_brand",
   });
   const [mainCategory, setMainCategory] = useState([]);
   const [category, setCategory] = useState([]);
@@ -448,6 +448,46 @@ function EditProduct({ productId, handleClose }) {
                     </div>
                   ))}
                 {/* when file upload */}
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    color: "black",
+                  }}
+                >
+                  Reviews
+                </span>
+                <div style={{ height: "500px", overflowY: "auto" }}>
+                  {productData?.review?.length === 0 ? (
+                    <div>This product has no reviews currently</div>
+                  ) : (
+                    <>
+                      {productData?.review?.map((item, index) => (
+                        <div key={index}>
+                          <div>
+                            <span
+                              style={{
+                                fontWeight: "bold",
+                              }}
+                            >
+                              username :
+                            </span>{" "}
+                            {item?.username}
+                          </div>
+                          <div>
+                            <span
+                              style={{
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Description :
+                            </span>{" "}
+                            {item?.desc}
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -588,10 +628,7 @@ function EditProduct({ productId, handleClose }) {
                       },
                     }}
                   >
-                  
-                    <MenuItem value="choose_brand">
-                      Choose your Brand
-                    </MenuItem>
+                    <MenuItem value="choose_brand">Choose your Brand</MenuItem>
                     {brand?.map((value, index) => (
                       <MenuItem
                         key={value._id}
@@ -671,7 +708,7 @@ function EditProduct({ productId, handleClose }) {
                     <TextField type='number'  fullWidth className='product_form_input' id="outlined-basic" name='cartoon_total_products' value={productData?.cartoon_total_products} onChange={handleChange} placeholder=" Total Products In One Cartoon " variant="outlined" />
                     </div>
                     </div> */}
-                    <div className="flex" style={{ width: "100%", gap: "10px" }}>
+                <div className="flex" style={{ width: "100%", gap: "10px" }}>
                   <div
                     className="add_product_label_input"
                     style={{ width: "100%" }}
@@ -689,9 +726,8 @@ function EditProduct({ productId, handleClose }) {
                       placeholder="Product Quantity"
                       variant="outlined"
                     />
-                    
                   </div>
-                  </div>
+                </div>
                 <div className="flex" style={{ width: "100%", gap: "10px" }}>
                   <div
                     className="add_product_label_input"
