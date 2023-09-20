@@ -114,7 +114,9 @@ const Order_Schema = new mongoose.Schema(
     ],
     shipping_address: { type: String },
     state: { type: String },
-    pincode: { type: Number },
+    pincode: { type: Number,
+      required:true
+     },
     // shipping_address:{
     //         pincode: { type: Number,required:true },
     //         state: { type: String,required:true },

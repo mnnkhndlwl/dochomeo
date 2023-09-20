@@ -39,7 +39,7 @@ const createNewOrder = async (req, res) => {
       products: req.body.products,
       shipping_address: req.body.shipping_address,
       state: req.body?.state,
-      pincode: req.body?.pincode,
+      pincode: req.body.pincode,
       customer_gst: req.body?.customer_gst,
       customer_business: req.body?.customer_business,
     });
@@ -176,6 +176,34 @@ const updateOrders = async (req, res) => {
     res.status(500).send("something went wrong !!");
   }
 };
+
+//delete single order
+const deleteOrderById = async (req, res) => {
+  try {
+    const orderId = req.params.id; // Assuming you pass the order ID as a route parameter
+    
+    // Check if orderId is provided
+    if (!orderId) {
+      return res.status(400).send({ message: "Order ID is required", status: false });
+    }
+
+    const deleteOrder = await Orders_Schema.findByIdAndDelete(orderId);
+
+    if (!deleteOrder) {
+      return res
+        .status(404)
+        .send({ message: "Order not found or could not be deleted", status: false });
+    }
+
+    return res
+      .status(200)
+      .send({ message: "Order deleted successfully", status: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Internal server error", status: false });
+  }
+};
+
 
 // DELETE ORDER's
 const deleteOrders = async (req, res) => {
@@ -317,3 +345,4 @@ exports.getOrderById = getOrderById;
 exports.updateOrders = updateOrders;
 exports.deleteOrders = deleteOrders;
 exports.getAllOrdersByUserId = getAllOrdersByUserId;
+exports.deleteOrderById = deleteOrderById;

@@ -11,7 +11,7 @@ msg91.initialize({authKey: process.env.MSG_AUTH_KEY});
         let otp = msg91.getOTP(process.env.MSG_TEMPLATE_ID);
         // Send OTP
        const otpSuccess= await otp.send("+91"+phone_number);
-        // const otpSuccess =  await Utils.sendOtp(phone_number)
+       //  const otpSuccess =  await Utils.sendOtp(phone_number)
         console.log("otpSuccess=>",otpSuccess)
         // res.status(200).send({status:true,message:'otp sent!!'})
         return { status:true };
@@ -23,16 +23,15 @@ msg91.initialize({authKey: process.env.MSG_AUTH_KEY});
 
 //========= VERIFY OTP FOR USER ========
 async function verifyOtpForUser( phone_number,otp_user) {
-    // const {phone_number} = req.body;
-    //console.log("req.body---->",req.body)
+    
     try {
         if(!phone_number) return { status: false };
         if(!otp_user) return { status: false };
-
+        console.log(phone_number);
         let otp = msg91.getOTP(process.env.MSG_TEMPLATE_ID);
-        // console.log("otyVerify BEFORE==>")
+         console.log(otp)
         let result = await otp.verify("+91"+phone_number,parseInt(otp_user));
-        // console.log("otyVerify AFTER==>",result)
+        console.log("otyVerify AFTER==>",result)
         if(result?.message === 'OTP verified success' ){
             console.log("verified success")
             return { status: true };
