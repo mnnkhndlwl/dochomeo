@@ -452,36 +452,52 @@ function EditProduct({ productId, handleClose }) {
                   style={{
                     fontWeight: "bold",
                     color: "black",
+                    marginBottom: 10,
+                    textDecoration: "underline",
+                    lineHeight: "20px",
                   }}
                 >
-                  Reviews
+                  Reviews ({productData?.review?.length})
                 </span>
-                <div style={{ height: "500px", overflowY: "auto" }}>
+                <div
+                  style={{
+                    height: "500px",
+                    overflowY: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                  }}
+                >
                   {productData?.review?.length === 0 ? (
                     <div>This product has no reviews currently</div>
                   ) : (
                     <>
                       {productData?.review?.map((item, index) => (
-                        <div key={index}>
+                        <div style={{
+                        
+                        }} key={index}>
+                         
                           <div>
-                            <span
-                              style={{
-                                fontWeight: "bold",
-                              }}
-                            >
-                              username :
-                            </span>{" "}
-                            {item?.username}
-                          </div>
-                          <div>
-                            <span
-                              style={{
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Description :
-                            </span>{" "}
-                            {item?.desc}
+                            <div>
+                              <span
+                                style={{
+                                  fontWeight: "bold",
+                                }}
+                              >
+                               {index + 1} .  Username:
+                              </span>{" "}
+                              {item?.username}
+                            </div>
+                            <div>
+                              <span
+                                style={{
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Description:
+                              </span>{" "}
+                              {item?.desc}
+                            </div>
                           </div>
                         </div>
                       ))}
