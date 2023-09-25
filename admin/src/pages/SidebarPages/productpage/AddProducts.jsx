@@ -130,8 +130,12 @@ function AddProducts({ handleClose }) {
     //   if(!productData?.product_sale_price){
     //     alert("Regular Price Is Greater Than Sale Price")
     //   }
-    if (productData?.product_regular_price <= productData?.product_sale_price) {
+    if (
+      parseInt(productData?.product_regular_price) <=
+      parseInt(productData?.product_sale_price)
+    ) {
       alert("Regular Price Need To Be Greater Than Sale Price !!");
+      setLoading(false);
       return;
     }
 
