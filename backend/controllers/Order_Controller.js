@@ -67,6 +67,11 @@ const updateProductQuantities = async (cart) => {
       });
 
       if (product) {
+        // Check if there's enough quantity in stock
+        if (product.quantity < cartItem.cartQuantity) {
+          throw new Error(`Not enough quantity in stock for product with ID: ${cartItem.productID}`);
+        }
+
         // Decrease the product quantity based on the quantity ordered
         product.quantity -= cartItem.cartQuantity;
 
@@ -76,9 +81,10 @@ const updateProductQuantities = async (cart) => {
     }
   } catch (error) {
     console.log(error);
-    // Handle errors here, you can log the error or send a response as needed
+  //  throw error; // Re-throw the error to be handled in the calling function (createNewOrder)
   }
 };
+
 
 // get all orders
 const getAllOrders = async (req, res) => {

@@ -60,9 +60,11 @@ const Products_Schema = new mongoose.Schema(
     },
     quantity: {
       type: Number,
+      default :0
     },
     original_quantity: {
       type: Number,
+      default :0
     },
     product_tag: {
       type: String,
