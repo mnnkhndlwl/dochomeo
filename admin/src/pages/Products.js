@@ -327,7 +327,7 @@ const EnhancedTableToolbar = (props) => {
                   anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   transformOrigin={{ vertical: "top", horizontal: "right" }}
                 >
-                  <MenuItem
+                  {/* <MenuItem
                     sx={{ color: "text.secondary" }}
                     onClick={() => props.setAsNewArrival(props.selected)}
                   >
@@ -388,7 +388,7 @@ const EnhancedTableToolbar = (props) => {
                       primary="Remove From Trending Product"
                       primaryTypographyProps={{ variant: "body2" }}
                     />
-                  </MenuItem>
+                  </MenuItem> */}
                   <MenuItem
                     sx={{ color: "text.secondary" }}
                     onClick={() => props.setOpenDeleteConfimModal(true)}
