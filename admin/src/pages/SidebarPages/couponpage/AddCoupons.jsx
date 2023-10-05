@@ -231,6 +231,9 @@ function AddCoupons({ handleClose }) {
                     onChange={handleChange}
                     placeholder=" Coupon Code "
                     variant="outlined"
+                    style={{
+                      textTransform:"uppercase"
+                    }}
                   />
                 </div>
 

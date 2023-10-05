@@ -390,7 +390,7 @@ const EnhancedTableToolbar = (props) => {
                       />
                     </ListItemIcon>
                     <ListItemText
-                      primary="Delete Product "
+                      primary="Delete Coupon "
                       primaryTypographyProps={{ variant: "body2" }}
                     />
                   </MenuItem>
@@ -725,7 +725,7 @@ export default function EnhancedTable() {
     console.log("VALUE FOR DELETE=>", value);
     await axios
       .delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/delete/product`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/coupon/delete`,
         { data: value },
         { withCredentials: true }
       )
@@ -737,10 +737,10 @@ export default function EnhancedTable() {
           setMessage((prev) => ({
             ...prev,
             type: "success",
-            message: "Product Deleted Successfully !",
+            message: "coupon Deleted Successfully !",
           }));
           setSnackbarOpen(true);
-          setFilters((prev) => ({ ...prev, by_category: "all" }));
+        //  setFilters((prev) => ({ ...prev, by_category: "all" }));
         }
         if (!res?.data?.status) {
           setMessage((prev) => ({
@@ -946,7 +946,7 @@ export default function EnhancedTable() {
                     variant="contained"
                     startIcon={<Iconify icon="eva:plus-fill" />}
                   >
-                    Add Coupon
+                    Generate Coupon
                   </Button>
                 }
               />
@@ -1514,7 +1514,7 @@ export default function EnhancedTable() {
                           {row.product_code?.length > 16 && "..."}
                         </TableCell> */}
                         <TableCell
-                          style={{ textTransform: "capitalize" }}
+                          style={{ textTransform: "uppercase" }}
                           align="left"
                         >
                           {row?.title?.slice(0, 22)}
