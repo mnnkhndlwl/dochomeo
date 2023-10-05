@@ -7,6 +7,7 @@ import { UseContextState } from './global/GlobalContext/GlobalContext';
 import User from './pages/User';
 import Login from './pages/Login';
 import Products from './pages/Products';
+import Coupons from './pages/Coupons';
 import Orders from './pages/Orders';
 import Category from './pages/Category';
 import Brand from "./pages/Brands";
@@ -31,6 +32,7 @@ export default function Router() {
      <Route element={<ProtectedRoute/>} >
      <Route exact path="/"  element={ <Navigate to='/dashboard/orders' />    }  />    
      <Route path="/dashboard/users" element={ <DashboardLayout Component={<User/>} />} />
+     <Route path="/dashboard/coupons" element={ <DashboardLayout Component={<Coupons />} />} />
      <Route path="/dashboard/products" element={ <DashboardLayout Component={<Products/>} />} />
      {/* <Route path="/dashboard/blog" element={ <DashboardLayout Component={<Blog/>} />} /> */}
      <Route path="/dashboard/orders" element={ <DashboardLayout Component={<Orders/>} />} />

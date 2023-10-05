@@ -2,7 +2,7 @@ const Users_Schema = require("../modals/Users");
 const Products_Schema = require("../modals/Products");
 const Utils = require("../utils/Utils");
 const { v4: uuidv4 } = require("uuid");
-const { instance } = require("./PaymentController");
+//const { instance } = require("./PaymentController");
 const crypto = require("crypto");
 const Orders_Schema = require("../modals/Orders");
 const generateOrderId = require("order-id")("key");
@@ -558,234 +558,234 @@ const makePaymentAddRewards = async (req, res) => {
   }
 };
 
-const verifyPaymentRezor = async (req, res) => {
-  try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      cartData,
-      email,
-      address,
-      total_amount,
-      reword,
-    } = req.body;
-    const { jwt } = req.cookies;
-    if (!jwt) {
-      return res.send("Please Login And Try Again");
-    }
+// const verifyPaymentRezor = async (req, res) => {
+//   try {
+//     const {
+//       razorpay_order_id,
+//       razorpay_payment_id,
+//       razorpay_signature,
+//       cartData,
+//       email,
+//       address,
+//       total_amount,
+//       reword,
+//     } = req.body;
+//     const { jwt } = req.cookies;
+//     if (!jwt) {
+//       return res.send("Please Login And Try Again");
+//     }
 
-    const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
+//     const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
 
-    const user = await Users_Schema.findById(_id.id);
+//     const user = await Users_Schema.findById(_id.id);
 
-    if (!user) {
-      return res.send("User Not Found");
-    }
+//     if (!user) {
+//       return res.send("User Not Found");
+//     }
 
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-      return res.status(404).send("Data Missing !!");
-    }
+//     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+//       return res.status(404).send("Data Missing !!");
+//     }
 
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
+//     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-    const expectedSign = await crypto
-      .createHmac("sha256", process.env.KEY_SECRET)
-      .update(body.toString())
-      .digest("hex");
+//     const expectedSign = await crypto
+//       .createHmac("sha256", process.env.KEY_SECRET)
+//       .update(body.toString())
+//       .digest("hex");
 
-    // console.log(expectedSign, razorpay_signature);
+//     // console.log(expectedSign, razorpay_signature);
 
-    if (expectedSign !== razorpay_signature) {
-      return res.status(404).send("Unauth !!");
-    }
+//     if (expectedSign !== razorpay_signature) {
+//       return res.status(404).send("Unauth !!");
+//     }
 
-    // if (reword > total_amount) {
-    //   const rew = total_amount - reword;
-    //   user.rewords_points = Math.abs(Number(rew));
-    //   user.save();
-    // } else {
-    user.rewords_points = user.rewords_points - reword;
-    user.save();
-    // }
+//     // if (reword > total_amount) {
+//     //   const rew = total_amount - reword;
+//     //   user.rewords_points = Math.abs(Number(rew));
+//     //   user.save();
+//     // } else {
+//     user.rewords_points = user.rewords_points - reword;
+//     user.save();
+//     // }
 
-    if (expectedSign === razorpay_signature) {
-      let prodId = [];
-      cartData.map((ele) => {
-        // console.log(ele);
-        prodId.push(ele?.data?._id);
-      });
+//     if (expectedSign === razorpay_signature) {
+//       let prodId = [];
+//       cartData.map((ele) => {
+//         // console.log(ele);
+//         prodId.push(ele?.data?._id);
+//       });
 
-      // console.log(prodId);
+//       // console.log(prodId);
 
-      const allProduct = await Products_Schema.find({ _id: prodId });
-      // console.log(allProduct);
+//       const allProduct = await Products_Schema.find({ _id: prodId });
+//       // console.log(allProduct);
 
-      let totatRewards = 0;
-      allProduct.map((ele) => {
-        // console.log(ele);
-        totatRewards += ele.product_reword_point;
-      });
+//       let totatRewards = 0;
+//       allProduct.map((ele) => {
+//         // console.log(ele);
+//         totatRewards += ele.product_reword_point;
+//       });
 
-      const user_main = await Users_Schema.findById(_id.id);
+//       const user_main = await Users_Schema.findById(_id.id);
 
-      console.log("Rewords", totatRewards, user_main.rewords_points);
+//       console.log("Rewords", totatRewards, user_main.rewords_points);
 
-      user_main.rewords_points += totatRewards;
-      // user_main.rewords_points += 1000;
-      user_main.save();
-      // const order_id = uuidv4();
-      // console.log(getUserId);
+//       user_main.rewords_points += totatRewards;
+//       // user_main.rewords_points += 1000;
+//       user_main.save();
+//       // const order_id = uuidv4();
+//       // console.log(getUserId);
 
-      // const orderData = {
-      //   order_id: `ORD_${order_id}`,
-      //   customer_id: user.user_id,
-      //   customer_name: user.username,
-      //   customer_phone_number: user.phone_number,
-      //   products: allProduct,
-      //   shipping_address: "",
-      //   state: "",
-      //   pincode: "",
-      // };
+//       // const orderData = {
+//       //   order_id: `ORD_${order_id}`,
+//       //   customer_id: user.user_id,
+//       //   customer_name: user.username,
+//       //   customer_phone_number: user.phone_number,
+//       //   products: allProduct,
+//       //   shipping_address: "",
+//       //   state: "",
+//       //   pincode: "",
+//       // };
 
-      // console.log(user);
-      // const order = await Order_Schema.find();
+//       // console.log(user);
+//       // const order = await Order_Schema.find();
 
-      const getOrderId = "order-" + generateOrderId.generate();
-      // console.log(getOrderId);
-      const create = new Orders_Schema({
-        order_id: getOrderId,
-        customer_phone_number: user?.phone_number,
-        customer_id: user?.user_id,
-        customer_name: user.username,
-        customer_email: email,
-        order_status: "pending",
-        products: cartData,
-        shipping_address: address,
-        razorpay_payment_id: razorpay_payment_id,
-        total_amount: total_amount,
-        paymentType: "online",
-        // state: req.body?.state,
-        // pincode: req.body?.pincode,
-        // customer_gst: req.body?.customer_gst,
-        // customer_business: req.body?.customer_business,
-      });
-      const result = await create.save();
+//       const getOrderId = "order-" + generateOrderId.generate();
+//       // console.log(getOrderId);
+//       const create = new Orders_Schema({
+//         order_id: getOrderId,
+//         customer_phone_number: user?.phone_number,
+//         customer_id: user?.user_id,
+//         customer_name: user.username,
+//         customer_email: email,
+//         order_status: "pending",
+//         products: cartData,
+//         shipping_address: address,
+//         razorpay_payment_id: razorpay_payment_id,
+//         total_amount: total_amount,
+//         paymentType: "online",
+//         // state: req.body?.state,
+//         // pincode: req.body?.pincode,
+//         // customer_gst: req.body?.customer_gst,
+//         // customer_business: req.body?.customer_business,
+//       });
+//       const result = await create.save();
 
-      console.log("reword", reword);
+//       console.log("reword", reword);
 
-      return res.status(200).json({
-        success: true,
-        message: "Your Transition is successful",
-        pay_id: razorpay_payment_id,
-      });
-    } else {
-      res.status(400).send({
-        success: false,
-        message: "Transition is Failed. Please Try Again !!",
-      });
-    }
+//       return res.status(200).json({
+//         success: true,
+//         message: "Your Transition is successful",
+//         pay_id: razorpay_payment_id,
+//       });
+//     } else {
+//       res.status(400).send({
+//         success: false,
+//         message: "Transition is Failed. Please Try Again !!",
+//       });
+//     }
 
-    return res.send({ success: true, message: "body" });
-  } catch (err) {
-    console.log("Error =>", err);
-    res.status(500).send("Something went wrong !!");
-  }
-};
-const verifyPaymentRezorByRewords = async (req, res) => {
-  try {
-    const { cartData, email, address, total_amount, reword } = req.body;
-    const { jwt } = req.cookies;
-    if (!jwt) {
-      return res.send("Please Login And Try Again");
-    }
+//     return res.send({ success: true, message: "body" });
+//   } catch (err) {
+//     console.log("Error =>", err);
+//     res.status(500).send("Something went wrong !!");
+//   }
+// };
+// const verifyPaymentRezorByRewords = async (req, res) => {
+//   try {
+//     const { cartData, email, address, total_amount, reword } = req.body;
+//     const { jwt } = req.cookies;
+//     if (!jwt) {
+//       return res.send("Please Login And Try Again");
+//     }
 
-    const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
+//     const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
 
-    const user = await Users_Schema.findById(_id.id);
+//     const user = await Users_Schema.findById(_id.id);
 
-    if (!user) {
-      return res.send("User Not Found");
-    }
+//     if (!user) {
+//       return res.send("User Not Found");
+//     }
 
-    const rew = total_amount - reword;
-    user.rewords_points = Math.abs(Number(rew));
-    user.save();
+//     const rew = total_amount - reword;
+//     user.rewords_points = Math.abs(Number(rew));
+//     user.save();
 
-    let prodId = [];
-    cartData.map((ele) => {
-      // console.log(ele);
-      prodId.push(ele?.data?._id);
-    });
+//     let prodId = [];
+//     cartData.map((ele) => {
+//       // console.log(ele);
+//       prodId.push(ele?.data?._id);
+//     });
 
-    // console.log(prodId);
+//     // console.log(prodId);
 
-    const allProduct = await Products_Schema.find({ _id: prodId });
-    // console.log(allProduct);
+//     const allProduct = await Products_Schema.find({ _id: prodId });
+//     // console.log(allProduct);
 
-    let totatRewards = 0;
-    allProduct.map((ele) => {
-      // console.log(ele);
-      totatRewards += ele.product_reword_point;
-    });
+//     let totatRewards = 0;
+//     allProduct.map((ele) => {
+//       // console.log(ele);
+//       totatRewards += ele.product_reword_point;
+//     });
 
-    const user_main = await Users_Schema.findById(_id.id);
+//     const user_main = await Users_Schema.findById(_id.id);
 
-    console.log("Rewords", totatRewards, user_main.rewords_points);
+//     console.log("Rewords", totatRewards, user_main.rewords_points);
 
-    user_main.rewords_points += totatRewards;
-    // user_main.rewords_points += 100;
-    user_main.save();
-    // const order_id = uuidv4();
-    // console.log(getUserId);
+//     user_main.rewords_points += totatRewards;
+//     // user_main.rewords_points += 100;
+//     user_main.save();
+//     // const order_id = uuidv4();
+//     // console.log(getUserId);
 
-    // const orderData = {
-    //   order_id: `ORD_${order_id}`,
-    //   customer_id: user.user_id,
-    //   customer_name: user.username,
-    //   customer_phone_number: user.phone_number,
-    //   products: allProduct,
-    //   shipping_address: "",
-    //   state: "",
-    //   pincode: "",
-    // };
+//     // const orderData = {
+//     //   order_id: `ORD_${order_id}`,
+//     //   customer_id: user.user_id,
+//     //   customer_name: user.username,
+//     //   customer_phone_number: user.phone_number,
+//     //   products: allProduct,
+//     //   shipping_address: "",
+//     //   state: "",
+//     //   pincode: "",
+//     // };
 
-    // console.log(user);
-    // const order = await Order_Schema.find();
+//     // console.log(user);
+//     // const order = await Order_Schema.find();
 
-    const getOrderId = "order-" + generateOrderId.generate();
-    // console.log(getOrderId);
-    const create = new Orders_Schema({
-      order_id: getOrderId,
-      customer_phone_number: user?.phone_number,
-      customer_id: user?.user_id,
-      customer_name: user.username,
-      customer_email: email,
-      order_status: "pending",
-      products: cartData,
-      shipping_address: address,
-      razorpay_payment_id: "-",
-      total_amount: total_amount,
-      paymentType: "by_reword",
-      // state: req.body?.state,
-      // pincode: req.body?.pincode,
-      // customer_gst: req.body?.customer_gst,
-      // customer_business: req.body?.customer_business,
-    });
-    const result = await create.save();
+//     const getOrderId = "order-" + generateOrderId.generate();
+//     // console.log(getOrderId);
+//     const create = new Orders_Schema({
+//       order_id: getOrderId,
+//       customer_phone_number: user?.phone_number,
+//       customer_id: user?.user_id,
+//       customer_name: user.username,
+//       customer_email: email,
+//       order_status: "pending",
+//       products: cartData,
+//       shipping_address: address,
+//       razorpay_payment_id: "-",
+//       total_amount: total_amount,
+//       paymentType: "by_reword",
+//       // state: req.body?.state,
+//       // pincode: req.body?.pincode,
+//       // customer_gst: req.body?.customer_gst,
+//       // customer_business: req.body?.customer_business,
+//     });
+//     const result = await create.save();
 
-    console.log("reword", reword);
+//     console.log("reword", reword);
 
-    return res.status(200).json({
-      success: true,
-      message: "Your Transition is successful",
-      pay_id: "-",
-    });
-  } catch (err) {
-    console.log("Error =>", err);
-    res.status(500).send("Something went wrong !!");
-  }
-};
+//     return res.status(200).json({
+//       success: true,
+//       message: "Your Transition is successful",
+//       pay_id: "-",
+//     });
+//   } catch (err) {
+//     console.log("Error =>", err);
+//     res.status(500).send("Something went wrong !!");
+//   }
+// };
 
 // get user by id (who's logged in)
 const getUserById = async (req, res) => {
@@ -1036,7 +1036,7 @@ exports.getUser = getUser;
 exports.verifyOTPRegLog = verifyOTPRegLog;
 exports.registerVerify = registerVerify;
 exports.fetchLoginUserData = fetchLoginUserData;
-exports.makePaymentAddRewards = makePaymentAddRewards;
-exports.verifyPaymentRezor = verifyPaymentRezor;
-exports.verifyPaymentRezorByRewords = verifyPaymentRezorByRewords;
+// exports.makePaymentAddRewards = makePaymentAddRewards;
+// exports.verifyPaymentRezor = verifyPaymentRezor;
+// exports.verifyPaymentRezorByRewords = verifyPaymentRezorByRewords;
 exports.deleteUsersById = deleteUsersById;

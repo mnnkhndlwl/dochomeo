@@ -13,9 +13,9 @@ router.post("/user/register_verify", User_Controllers.registerVerify);
 router.post("/user/login_by_number", User_Controllers.loginUserByNumber);
 router.post("/user/verify_login", User_Controllers.verifyOTPRegLog);
 router.get("/user/loginUserData", User_Controllers.fetchLoginUserData);
-router.post("/user/payment_add_reword", User_Controllers.makePaymentAddRewards);
-router.post("/user/paymentVerifyRezor", User_Controllers.verifyPaymentRezor);
-router.post("/user/paymentVerifyRezorByReword", User_Controllers.verifyPaymentRezorByRewords);
+// router.post("/user/payment_add_reword", User_Controllers.makePaymentAddRewards);
+// router.post("/user/paymentVerifyRezor", User_Controllers.verifyPaymentRezor);
+// router.post("/user/paymentVerifyRezorByReword", User_Controllers.verifyPaymentRezorByRewords);
 router.post("/user/deleteUsersById", User_Controllers.deleteUsersById);
 
 router.post("/user/login",User_Controllers.loginUser);

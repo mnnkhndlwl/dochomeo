@@ -122,7 +122,7 @@ const editCategory = async (req, res) => {
 // update main category
 const updateMainCategory = async (req, res) => {
   const oldMainCategory = req.query.old_main_category_name;
-
+  console.log(oldMainCategory);
   const { main_category_name, main_category_slug, main_category_image } =
     req.body;
   console.log(oldMainCategory);

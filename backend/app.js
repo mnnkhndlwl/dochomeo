@@ -22,6 +22,7 @@ const Doctor_Routes = require("./routes/doctor_routes");
 const DoctorEnquiry_Routes = require("./routes/doctor_enquiry_routes");
 const WholeSaleEnquiry_Routes = require("./routes/wholesale_enquiry_routes");
 const Brands_Routes = require("./routes/category_routes");
+const Coupon_Routes = require("./routes/coupon_routes");
 
 // App Routes
 
@@ -53,6 +54,7 @@ app.use('/api',DoctorEnquiry_Routes);
 app.use('/api',WholeSaleEnquiry_Routes);
 app.use("/api", Brands_Routes);
 app.use("/api", Mobilebanners_Routes);
+app.use("/api/coupon", Coupon_Routes);
 
 // app.use("/api",UploadImage_Routes);
 

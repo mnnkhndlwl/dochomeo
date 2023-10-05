@@ -37,6 +37,11 @@ const navConfig = [
     icon: getIcon('material-symbols:category-rounded'),
   },
   {
+    title: 'Coupons',
+    path: '/dashboard/coupons',
+    icon: getIcon('solar:bill-list-bold'),
+  },
+  {
     title: 'Products',
     path: '/dashboard/products',
     icon: getIcon('eva:shopping-bag-fill'),
