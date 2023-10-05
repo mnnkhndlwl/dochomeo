@@ -100,7 +100,35 @@ exports.getCouponByTitle = async (req, res) => {
 
     res.status(200).json(coupon);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// delete products
+exports.deleteCoupons = async (req, res) => {
+  // console.log("body=>",req.body)
+  // console.log("body=>",req.body?.length)
+  try {
+    if (req.body?.length) {
+      const deleteSelected = await Coupon.deleteMany({
+        _id: {
+          $in: req.body,
+        },
+      });
+      if (!deleteSelected) {
+        return res
+          .status(200)
+          .send({ message: "Coupon delete failed", status: false });
+      }
+      return res
+        .status(200)
+        .send({ message: "Coupon delete success", status: true });
+    }
+
+    res.status(200).send({ message: "coupon delete failed", status: false });
+  } catch (err) {
+    console.log(err);
+    res.status(200).send({ message: "coupon delete failed", status: false });
   }
 };
 

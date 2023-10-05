@@ -14,6 +14,9 @@ router.put('/update/:id', couponController.updateCoupon);
 // Get a coupon by its title
 router.get('/title/:title', couponController.getCouponByTitle);
 
+// delete products
+router.delete('/delete', couponController.deleteCoupons);
+
 // Get a coupon by its title
 router.get('/search', couponController.searchCoupons);
 

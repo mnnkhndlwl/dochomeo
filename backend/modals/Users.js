@@ -71,6 +71,9 @@ const Users_Schema = new mongoose.Schema(
     //     required:true
     // },
     gst_number: { type: String },
+    coupons: {
+      type: String
+    },
     pincode: { type: Number },
     state: { type: String },
     country: { type: String },
