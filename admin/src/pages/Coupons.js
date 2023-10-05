@@ -1529,7 +1529,21 @@ export default function EnhancedTable() {
                       <TableCell  style={{textTransform:'capitalize'}} align="center">{row.product_sale_price}</TableCell> */}
                         {/* <TableCell style={{textTransform:'capitalize'}}  align="center">{row.product_gst}</TableCell> */}
 
-                        <TableCell style={{textTransform:'capitalize'}}  align="left">  ₹{row?.discountValue}</TableCell>
+                        {row?.discountType === "amount" ? (
+                          <TableCell
+                            style={{ textTransform: "capitalize" }}
+                            align="left"
+                          >
+                            Rs. {row?.discountValue}
+                          </TableCell>
+                        ) : (
+                          <TableCell
+                            style={{ textTransform: "capitalize" }}
+                            align="left"
+                          >
+                            {row?.discountValue} %
+                          </TableCell>
+                        )}
                         <TableCell
                           style={{ textTransform: "capitalize" }}
                           align="left"
@@ -1542,9 +1556,8 @@ export default function EnhancedTable() {
                             }}
                           >
                             {" "}
-                            {row?.expiryDate?.slice(0,10)}
+                            {row?.expiryDate?.slice(0, 10)}
                           </p>
-                          
                         </TableCell>
 
                         <TableCell align="left">
