@@ -84,8 +84,9 @@ exports.updateCoupon = async (req, res) => {
 // Get a coupon by its title
 exports.getCouponByTitle = async (req, res) => {
   console.log(req.params.title);
+  const searchRegex = req.params.title;
   try {
-    const coupon = await Coupon.findOne({ title: req.params.title });
+    const coupon = await Coupon.findOne({ title: searchRegex  });
     console.log(coupon);
     if (!coupon) {
       return res.status(404).json({ message: 'Coupon not valid' });
