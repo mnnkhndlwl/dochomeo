@@ -14,7 +14,7 @@ const addReview = async (req, res) => {
     }
 
     const userId = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
-    const { desc, rating,username } = req.body;
+    const { desc, rating, username } = req.body;
 
     const product = await Products_Schema.findById(productId);
 
@@ -86,7 +86,7 @@ const editReview = async (req, res) => {
     }
 
     review.desc = desc;
-   // review.rating = rating;
+    // review.rating = rating;
 
     await product.save();
 
@@ -236,6 +236,12 @@ const searchProducts = async (req, res) => {
     if (!result.length > 0) {
       result = await Products_Schema.find({
         product_main_category: { $regex: searchRegex },
+      }).sort({ createdAt: -1 });
+    }
+
+    if (!result.length > 0) {
+      result = await Products_Schema.find({
+        product_subcategory: { $regex: searchRegex },
       }).sort({ createdAt: -1 });
     }
 
