@@ -165,7 +165,7 @@ function EditCoupon({ productId, handleClose }) {
     // console.log("productsImageToFirebase after=>", productsImageToFirebase);
 
     let data = {
-      title: productData?.title,
+      title: productData?.title.toUpperCase(),
       description :  productData?.description ,
       discountValue: productData?.discountValue,
       discountType: productData?.discountType,
@@ -473,7 +473,7 @@ function EditCoupon({ productId, handleClose }) {
                 <div className="add_product_label_input">
                   <label htmlFor=""> Expiry Date </label>
                   <TextField
-                    required
+                   // required
                     fullWidth
                     className="product_form_input"
                     id="outlined-basic"

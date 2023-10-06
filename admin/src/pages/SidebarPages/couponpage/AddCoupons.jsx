@@ -120,7 +120,7 @@ function AddCoupons({ handleClose }) {
       .post(
         `${process.env.REACT_APP_BACKEND_URL}/api/coupon/add`,
         {
-          title: productData?.coupon_code,
+          title: productData?.coupon_code.toUpperCase(),
           description: productData?.description,
           discountType: productData?.product_main_category,
           discountValue: productData?.discount_value,

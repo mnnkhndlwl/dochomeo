@@ -139,6 +139,17 @@ function AddProducts({ handleClose }) {
       return;
     }
 
+    if (
+      productData?.product_main_category === "choose_main_category" ||
+      productData?.product_category === "choose_category" ||
+      productData?.product_subcategory === "choose_sub_category" ||
+      productData?.product_brand === "choose_your_brand"
+    ) {
+      alert("Please fill all the details");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     let productsImageToFirebase = [];
     console.log("productsImageToFirebase", productsImageToFirebase);
