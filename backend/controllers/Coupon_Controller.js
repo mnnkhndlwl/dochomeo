@@ -88,7 +88,7 @@ exports.getCouponByTitle = async (req, res) => {
     const coupon = await Coupon.findOne({ title: req.params.title });
     console.log(coupon);
     if (!coupon) {
-      return res.status(404).json({ message: 'Please enter a Coupon' });
+      return res.status(404).json({ message: 'Coupon not valid' });
     }
 
     // Check if the coupon has expired
