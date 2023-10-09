@@ -214,39 +214,83 @@ const editProduct = async (req, res) => {
 };
 
 // SEARCH IN PRODUCTS
+// const searchProducts = async (req, res) => {
+//   const searchValue = req.query.search;
+//   console.log(searchValue);
+//   const searchRegex = Utils.createRegex(searchValue);
+//   console.log(searchRegex);
+//   let result;
+//   try {
+//     result = await Products_Schema.find({
+//       product_name: { $regex: searchRegex },
+//     }).sort({ createdAt: -1 });
+//     if (!result.length > 0) {
+//       result = await Products_Schema.find({
+//         product_code: { $regex: searchRegex },
+//       }).sort({ createdAt: -1 });
+//     }
+//     if (!result.length > 0) {
+//       result = await Products_Schema.find({
+//         product_brand: { $regex: searchRegex },
+//       }).sort({ createdAt: -1 });
+//     }
+//     if (!result.length > 0) {
+//       result = await Products_Schema.find({
+//         product_main_category: { $regex: searchRegex },
+//       }).sort({ createdAt: -1 });
+//     }
+
+//     if (!result.length > 0) {
+//       result = await Products_Schema.find({
+//         product_subcategory: { $regex: searchRegex },
+//       }).sort({ createdAt: -1 });
+//     }
+
+//    // console.log(result);
+//     res.status(200).send(result);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).send("Something went wrong !!");
+//   }
+// };
+
 const searchProducts = async (req, res) => {
   const searchValue = req.query.search;
   console.log(searchValue);
-  const searchRegex = Utils.createRegex(searchValue);
-  let result;
+  const searchRegex = Utils.createRegex(searchValue?.toLowerCase());
+  console.log(searchRegex);
+  let result = [];
+
   try {
-    result = await Products_Schema.find({
-      product_name: { $regex: searchRegex },
-    }).sort({ createdAt: -1 });
-    if (!result.length > 0) {
-      result = await Products_Schema.find({
-        product_code: { $regex: searchRegex },
-      }).sort({ createdAt: -1 });
-    }
-    if (!result.length > 0) {
-      result = await Products_Schema.find({
-        product_brand: { $regex: searchRegex },
-      }).sort({ createdAt: -1 });
-    }
-    if (!result.length > 0) {
-      result = await Products_Schema.find({
-        product_main_category: { $regex: searchRegex },
-      }).sort({ createdAt: -1 });
+    const searchQueries = [
+      {
+        product_slug: { $regex: searchRegex },
+      },
+      { product_name: { $regex: searchRegex } },
+      { product_code: { $regex: searchRegex } },
+      { product_brand: { $regex: searchRegex } },
+      { product_main_category: { $regex: searchRegex } },
+      { product_subcategory: { $regex: searchRegex } },
+      { product_main_category_slug: { $regex: searchRegex } },
+      { product_subcategory_slug: { $regex: searchRegex } },
+      { product_category: { $regex: searchRegex } },
+      { product_category_slug: { $regex: searchRegex } },
+    ];
+
+    for (const query of searchQueries) {
+      const queryResult = await Products_Schema.find(query).sort({
+        createdAt: -1,
+      });
+      if (queryResult.length > 0) {
+        result = result.concat(queryResult);
+      }
     }
 
-    if (!result.length > 0) {
-      result = await Products_Schema.find({
-        product_subcategory: { $regex: searchRegex },
-      }).sort({ createdAt: -1 });
+    if (result.length > 0) {
+      res.status(200).send(result);
+    } else {
+      res.status(404).send("No results found.");
     }
-
-    console.log(result);
-    res.status(200).send(result);
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong !!");

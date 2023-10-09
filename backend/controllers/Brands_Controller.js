@@ -1,17 +1,18 @@
 // brands categories hai or categories brands hai (alga badli)
 const { count } = require("../modals/Brands");
 const Brands_Schema = require("../modals/Brands");
+const Products_Schema = require("../modals/Products");
 const { createRegex } = require("../utils/Utils");
 
 // get all brands
-const getAllBrands = async (req,res) => {
+const getAllBrands = async (req, res) => {
   try {
     const result = await Brands_Schema.find();
     res.status(200).send(result);
   } catch (error) {
     res.status(500).send("Something went wroog !!");
   }
-}
+};
 
 // create category
 const createCategory = async (req, res) => {
@@ -22,12 +23,10 @@ const createCategory = async (req, res) => {
       category_slug: req.body.category_slug?.toLowerCase(),
     });
     if (findExistingCategory.length > 0) {
-      return res
-        .status(200)
-        .send({
-          status: false,
-          message: "category already exists in main category !!",
-        });
+      return res.status(200).send({
+        status: false,
+        message: "category already exists in main category !!",
+      });
     }
     // update category if main category does not have any category or sub category otherwise create a new one
     const findMainCategory = await Brands_Schema.find({
@@ -103,22 +102,42 @@ const createMainCategory = async (req, res) => {
 const editCategory = async (req, res) => {
   const categoryId = req.params.category_id;
   console.log(req.body);
+  console.log("----------------end==================");
   try {
     if (!categoryId) {
       return res.send("please provide a category id");
     }
+    const category = await Brands_Schema.findById(categoryId);
     const findCategory = await Brands_Schema.findByIdAndUpdate(categoryId, {
       $set: req.body,
     });
     if (!findCategory) {
       return res.send("category not found");
     }
+    if (req.body?.category_name) {
+      console.log("entered");
+      const f = await Products_Schema.find({
+        product_category: category?.category_name,
+      });
+      console.log("FIND___", f);
+      await Products_Schema.updateMany(
+        { product_category: category?.category_name },
+        {
+          $set: {
+            product_category: req.body?.category_name,
+            product_category_slug: req.body?.category_slug,
+          },
+        }
+      );
+    }
+    
     res.status(200).send("category updated successfully !!");
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong !!");
   }
 };
+
 // update main category
 const updateMainCategory = async (req, res) => {
   const oldMainCategory = req.query.old_main_category_name;
@@ -144,6 +163,23 @@ const updateMainCategory = async (req, res) => {
             },
           }
         );
+        if (main_category_name) {
+          console.log("entered");
+          const f = await Products_Schema.find({
+            product_main_category: oldMainCategory,
+          });
+          console.log("FIND___", f);
+          await Products_Schema.updateMany(
+            { product_main_category: oldMainCategory },
+            {
+              $set: {
+                product_main_category: main_category_name?.toLowerCase(),
+                product_main_category_slug: main_category_slug?.toLowerCase(),
+              },
+            }
+          );
+        }
+
         return res
           .status(200)
           .send({ messgae: "updated success !!", update: updateAll });
@@ -246,13 +282,11 @@ const getAllCategory = async (req, res) => {
     ]).sort({ _id: 1 });
     //  console.log(categoryForFilter)
     const allCategory = await Brands_Schema.find({});
-    res
-      .status(200)
-      .send({
-        all_categories: allCategory,
-        countCategory: countCategory,
-        categoryForFilter: categoryForFilter,
-      });
+    res.status(200).send({
+      all_categories: allCategory,
+      countCategory: countCategory,
+      categoryForFilter: categoryForFilter,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wroog !!");

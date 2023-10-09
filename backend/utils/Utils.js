@@ -31,9 +31,11 @@ function compare_Password(password, hashedPassword) {
 
 // creating regex
 function createRegex(value) {
-  let createdRegex = new RegExp(value?.toLowerCase(), "i");
-
-  return createdRegex;
+  // Escape special characters in the search value
+  
+  const escapedValue = value.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  // Create a case-insensitive regex with optional spaces/periods
+  return new RegExp(escapedValue.split(/\s*\.\s*/).join('.*'), 'i');
 }
 
 // get previous date

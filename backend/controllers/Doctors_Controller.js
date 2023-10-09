@@ -90,9 +90,37 @@ const searchDoctors = async (req, res) => {
   }
 };
 
+const deleteDoctors = async (req, res) => {
+  // console.log("body=>",req.body)
+  // console.log("body=>",req.body?.length)
+  try {
+    if (req.body?.length) {
+      const deleteSelected = await Doctor_Schema.deleteMany({
+        _id: {
+          $in: req.body,
+        },
+      });
+      if (!deleteSelected) {
+        return res
+          .status(200)
+          .send({ message: "Doctor delete failed", status: false });
+      }
+      return res
+        .status(200)
+        .send({ message: "Doctor delete success", status: true });
+    }
+
+    res.status(200).send({ message: "Doctor delete failed", status: false });
+  } catch (err) {
+    console.log(err);
+    res.status(200).send({ message: "Doctor delete failed", status: false });
+  }
+};
+
 exports.searchDoctors = searchDoctors;
 exports.addDoctors = addDoctors;
 exports.getDoctors = getDoctors;
 exports.updateDoctor = updateDoctor;
 exports.getDoctorById = getDoctorById;
+exports.deleteDoctors = deleteDoctors;
 

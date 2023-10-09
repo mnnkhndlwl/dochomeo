@@ -2,6 +2,7 @@
 //const { count } = require("../modals/Brands");
 const Category_Schema = require("../modals/Category");
 const { createRegex } = require("../utils/Utils");
+const Products_Schema = require("../modals/Products");
 
 // get all brands
 const getAllBrands = async (req,res) => {
@@ -144,6 +145,21 @@ const updateMainCategory = async (req, res) => {
             },
           }
         );
+        if(main_category_name) {
+          console.log("entered");
+          const f = await Products_Schema.find({
+            product_brand : oldMainCategory,
+          });
+          console.log("FIND___", f);
+          await Products_Schema.updateMany(
+            { product_brand: oldMainCategory },
+            {
+              $set: {
+                product_brand: main_category_name?.toLowerCase(),
+              },
+            }
+          );
+        }
         return res
           .status(200)
           .send({ messgae: "updated success !!", update: updateAll });
