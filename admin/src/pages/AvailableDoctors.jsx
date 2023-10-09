@@ -480,7 +480,7 @@ export default function EnhancedTable() {
     console.log("VALUE FOR DELETE=>", value);
     await axios
       .delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/delete/order/by/id`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/delete/doctors`,
         { data: value },
         { withCredentials: true }
       )
@@ -488,11 +488,11 @@ export default function EnhancedTable() {
         console.log(res);
         setOpenDeleteConfimModal(false);
         setRender((prev) => !prev);
-        if (res?.data?.status) {
+        if (res?.data?.message) {
           setMessage((prev) => ({
             ...prev,
             type: "success",
-            message: "Product Deleted Successfully !",
+            message: "Doctors Deleted Successfully !",
           }));
           setSnackbarOpen(true);
           setFilters((prev) => ({ ...prev, by_category: "all" }));
