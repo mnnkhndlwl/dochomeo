@@ -14,6 +14,11 @@ import CustomizedSnackbars from "../../../global/Snackbar/CustomSnackbar";
 import noImage from "../../../assests/No_image.svg";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "@mui/material/Backdrop";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import CancelIcon from "@mui/icons-material/Cancel";
 
 function AddCoupons({ handleClose }) {
@@ -122,6 +127,8 @@ function AddCoupons({ handleClose }) {
         {
           title: productData?.coupon_code.toUpperCase(),
           description: productData?.description,
+          isOrderCap: productData?.isOrderCap,
+          OrderCap: productData?.OrderCap,
           discountType: productData?.product_main_category,
           discountValue: productData?.discount_value,
           expiryDate: productData?.expiry_date,
@@ -232,11 +239,48 @@ function AddCoupons({ handleClose }) {
                     placeholder=" Coupon Code "
                     variant="outlined"
                     style={{
-                      textTransform:"uppercase"
+                      textTransform: "uppercase",
                     }}
                   />
                 </div>
-
+                <div className="add_product_label_input">
+                  <label htmlFor=""> Is there any minimum amount? </label>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue="false"
+                    name="isOrderCap"
+                    value={productData?.isOrderCap}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio />}
+                      label="True"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio />}
+                      label="False"
+                    />
+                  </RadioGroup>
+                </div>
+                {
+                  productData?.isOrderCap === "true" &&
+                <div className="add_product_label_input">
+                  <label htmlFor=""> Minimum amount </label>
+                  <TextField
+                    fullWidth
+                    className="product_form_input"
+                    id="outlined-basic"
+                    type="number"
+                    name="OrderCap"
+                    value={productData?.OrderCap}
+                    onChange={handleChange}
+                    placeholder=" Enter minimum amount"
+                    variant="outlined"
+                  />
+                </div>
+                }
                 <div className="add_product_label_input">
                   <label htmlFor=""> Expiry Date </label>
                   <TextField

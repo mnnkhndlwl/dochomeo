@@ -129,6 +129,12 @@ const headCells = [
     label: "Coupon Code",
   },
   {
+    id: "Minimum Amount",
+    numeric: false,
+    disablePadding: true,
+    label: "Minimum Amount",
+  },
+  {
     id: "Type",
     numeric: false,
     disablePadding: true,
@@ -1518,6 +1524,12 @@ export default function EnhancedTable() {
                           align="left"
                         >
                           {row?.title?.slice(0, 22)}
+                        </TableCell>
+                        <TableCell
+                          style={{ textTransform: "capitalize" }}
+                          align="left"
+                        >
+                          Rs. {row?.OrderCap}
                         </TableCell>
                         <TableCell
                           style={{ textTransform: "capitalize" }}

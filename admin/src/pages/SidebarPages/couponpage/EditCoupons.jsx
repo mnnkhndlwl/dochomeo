@@ -18,12 +18,13 @@ import CustomizedSnackbars from "../../../global/Snackbar/CustomSnackbar";
 import ConfimModal from "../../../global/Modals/ConfimModal";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "@mui/material/Backdrop";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 function EditCoupon({ productId, handleClose }) {
-  const [productData, setProductData] = useState({
-   
-  });
+  const [productData, setProductData] = useState({});
   const [mainCategory, setMainCategory] = useState([]);
   const [category, setCategory] = useState([]);
   const [brand, setBrand] = useState([]);
@@ -39,9 +40,9 @@ function EditCoupon({ productId, handleClose }) {
 
   //================= GET PRODUCT  =================
   useEffect(() => {
-
     setLoading(true);
-    axios.get(
+    axios
+      .get(
         `${process.env.REACT_APP_BACKEND_URL}/api/coupon/title/${productId}`,
         { withCredentials: true }
       )
@@ -166,10 +167,12 @@ function EditCoupon({ productId, handleClose }) {
 
     let data = {
       title: productData?.title.toUpperCase(),
-      description :  productData?.description ,
+      description: productData?.description,
+      isOrderCap: productData?.isOrderCap,
+      OrderCap: productData?.OrderCap,
       discountValue: productData?.discountValue,
       discountType: productData?.discountType,
-      expiryDate: productData?.expiryDate
+      expiryDate: productData?.expiryDate,
     };
     console.log("form Data ==>", data);
     await axios
@@ -469,11 +472,48 @@ function EditCoupon({ productId, handleClose }) {
                     variant="outlined"
                   />
                 </div>
+                <div className="add_product_label_input">
+                  <label htmlFor=""> Is there any minimum amount? </label>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue={productData?.isOrderCap === "true" ? "true" : "false" }
+                    name="isOrderCap"
+                    value={productData?.isOrderCap === "true" ? "true" : "false" }
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="true"
+                      control={<Radio />}
+                      label="True"
+                    />
+                    <FormControlLabel
+                      value="false"
+                      control={<Radio />}
+                      label="False"
+                    />
+                  </RadioGroup>
+                </div>
+                {productData?.isOrderCap === "true" && (
+                  <div className="add_product_label_input">
+                    <label htmlFor=""> Minimum amount </label>
+                    <TextField
+                      fullWidth
+                      className="product_form_input"
+                      id="outlined-basic"
+                      type="number"
+                      name="OrderCap"
+                      value={productData?.OrderCap}
+                      onChange={handleChange}
+                      placeholder=" Enter minimum amount"
+                      variant="outlined"
+                    />
+                  </div>
+                )}
 
                 <div className="add_product_label_input">
                   <label htmlFor=""> Expiry Date </label>
                   <TextField
-                   // required
+                    // required
                     fullWidth
                     className="product_form_input"
                     id="outlined-basic"
@@ -518,7 +558,7 @@ function EditCoupon({ productId, handleClose }) {
                       },
                     }}
                   >
-                    { ["percentage","amount"]?.map((value, index) => (
+                    {["percentage", "amount"]?.map((value, index) => (
                       <MenuItem
                         key={value}
                         style={{ textTransform: "capitalize" }}
