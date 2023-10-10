@@ -10,6 +10,14 @@ const couponSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  isOrderCap: {
+    type: String,
+    default: "false"
+  },
+  OrderCap: {
+    type: Number,
+    default: 0
+  },
   discountType: {
     type: String,
     enum: ['percentage', 'amount'],
