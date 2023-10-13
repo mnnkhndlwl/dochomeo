@@ -423,10 +423,10 @@ export default function EnhancedTable() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [filterName, setFilterName] = useState("");
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const ref = useRef(null);
   const ref2 = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -478,12 +478,13 @@ export default function EnhancedTable() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/api/all/products`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/all/products?page=${page}&size=${rowsPerPage}`, {
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
         setData(res?.data?.allProducts);
+        console.log(res?.data?.allProducts);
         setProductCount(res?.data?.getProductsCount);
         setCatgoryFilter(res?.data?.categoryForFilter);
         setProductStatusFilter(res?.data?.getAllProductStatus);
@@ -535,13 +536,13 @@ export default function EnhancedTable() {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/search/in/products?search=${searchValue}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/search/in/products?page=${page}&size=${rowsPerPage}&search=${searchValue}`,
         { withCredentials: true }
       )
       .then((res) => {
         console.log(res);
-        setData(res?.data);
-        setProductCount(res?.data?.length);
+        setData(res?.data?.result);
+        setProductCount(res?.data?.count);
         setLoading(false);
       })
       .catch((err) => {
@@ -675,7 +676,7 @@ export default function EnhancedTable() {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setPage(1);
   };
 
   const handleChangeDense = (event) => {
@@ -686,7 +687,7 @@ export default function EnhancedTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+    page > 0 ? Math.max(0, ( page) * rowsPerPage - data.length) : 0;
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
