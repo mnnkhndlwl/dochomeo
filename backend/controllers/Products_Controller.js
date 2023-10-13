@@ -148,15 +148,19 @@ const createProducts = async (req, res) => {
 // get all products
 const getAllProducts = async (req, res) => {
   try {
+    const { startIndex, endIndex,page } = req.pagination;
     const getProductsCount = await Products_Schema.find({}).count();
     const categoryForFilter = await Brands_Schema.aggregate([
       { $group: { _id: "$main_category_name" } },
     ]);
     const all_category_for_filter = await Brands_Schema.find({});
     const allProducts = await Products_Schema.find({}).sort({ createdAt: -1 });
-    // console.log(allProducts);
+     console.log(startIndex);
+     console.log(endIndex);
     res.status(200).send({
-      allProducts: allProducts,
+      allProducts: allProducts.slice(startIndex, endIndex),
+      page:page,
+      count: allProducts.length,
       getProductsCount: getProductsCount,
       getAllProductStatus: product_status,
       categoryForFilter: categoryForFilter,
@@ -213,9 +217,34 @@ const editProduct = async (req, res) => {
   }
 };
 
+// homepage products
+const homeProducts = async (req, res) => {
+  try {
+    const brands = await Brands_Schema.find();
+    const bdata = brands.slice(0, 4);
+    const data = [];
+
+    // Use Promise.all to wait for all async operations to complete
+    await Promise.all(
+      bdata.map(async (i) => {
+        const pr = await Products_Schema.find({
+          product_main_category: i.main_category_name,
+        }).limit(10);
+        data.push(pr);
+      })
+    );
+
+    res.status(200).send(data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong !!");
+  }
+};
+
 //SEARCH IN PRODUCTS
 const searchProducts = async (req, res) => {
   const searchValue = req.query.search;
+  const { startIndex, endIndex,page } = req.pagination;
   console.log(searchValue);
   const searchRegex = Utils.createRegex(searchValue);
   console.log(searchRegex);
@@ -246,8 +275,12 @@ const searchProducts = async (req, res) => {
       }).sort({ createdAt: -1 });
     }
 
-   // console.log(result);
-    res.status(200).send(result);
+    // console.log(result);
+    res.status(200).send({
+      result:result.slice(startIndex, endIndex),
+      count: result.length,
+      page:page
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong !!");
@@ -302,6 +335,7 @@ const filterProducts = async (req, res) => {
   const { by_status, date_from, date_to, by_category, by_product_status } =
     req.query;
   let result;
+  const { startIndex, endIndex } = req.pagination;
   console.log("by_status,date_from,date_to", by_status, date_from, date_to);
   try {
     const endDate = new Date(`${date_to}`);
@@ -325,7 +359,7 @@ const filterProducts = async (req, res) => {
             },
           },
         ]).sort({ createdAt: -1 });
-        return res.status(200).send(result);
+        return res.status(200).send(result.slice(startIndex, endIndex));
       }
     } else {
       result = await Products_Schema.find({
@@ -346,21 +380,21 @@ const filterProducts = async (req, res) => {
         },
       ]).sort({ createdAt: -1 });
       console.log("RESULT NEW----", result);
-      return res.status(200).send(result);
+      return res.status(200).send(result.slice(startIndex, endIndex));
     }
 
     if (by_category != "all") {
       result = await Products_Schema.find({
         product_main_category: by_category,
       }).sort({ createdAt: -1 });
-      return res.status(200).send(result);
+      return res.status(200).send(result.slice(startIndex, endIndex));
     }
     if (by_product_status != "all") {
       console.log(by_product_status);
       result = await Products_Schema.find({
         product_status: by_product_status,
       }).sort({ createdAt: -1 });
-      return res.status(200).send(result);
+      return res.status(200).send(result.slice(startIndex, endIndex));
     }
   } catch (err) {
     console.log(err);
@@ -609,3 +643,4 @@ exports.removeTrendingProducts = removeTrendingProducts;
 exports.addReview = addReview;
 exports.deleteReview = deleteReview;
 exports.editReview = editReview;
+exports.homeProducts = homeProducts;
