@@ -15,6 +15,8 @@ import noImage from "../../../assests/No_image.svg";
 import CloseIcon from "@mui/icons-material/Close";
 import Backdrop from "@mui/material/Backdrop";
 import CancelIcon from "@mui/icons-material/Cancel";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 function AddProducts({ handleClose }) {
   const [productData, setProductData] = useState({
@@ -33,6 +35,48 @@ function AddProducts({ handleClose }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [render, setRender] = useState(false);
   console.log("PRODUCT DATA", productData);
+
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ["blockquote", "code-block"],
+
+      [{ header: 1 }, { header: 2 }], // custom button values
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }], // superscript/subscript
+      [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+      [{ direction: "rtl" }], // text direction
+
+      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ font: [] }],
+      [{ align: [] }],
+
+      ["clean"],
+    ],
+    clipboard: {
+      matchVisual: false,
+    },
+  };
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "color",
+  ];
 
   //================= GET ALL MAIN CATEGORY =================
   useEffect(() => {
@@ -164,7 +208,11 @@ function AddProducts({ handleClose }) {
     await axios
       .post(
         `${process.env.REACT_APP_BACKEND_URL}/api/add/new/product`,
-        { quantity : productData?.product_quantity ,...productData, product_images: productsImageToFirebase },
+        {
+          quantity: productData?.product_quantity,
+          ...productData,
+          product_images: productsImageToFirebase,
+        },
         { withCredential: true }
       )
       .then((res) => {
@@ -560,7 +608,17 @@ function AddProducts({ handleClose }) {
 
                 <div className="add_product_label_input">
                   <label htmlFor=""> Description </label>
-                  <TextField
+                  <ReactQuill
+                    theme="snow"
+                    onChange={(e) => {
+                      setProductData((prev) => ({ ...prev, product_description: e }));
+                    }}
+                    value={productData?.product_description}
+                    modules={modules}
+                    formats={formats}
+                    style={{ width: "100%",height:"30vh" }}
+                  />
+                  {/* <TextField
                     multiline
                     rows={10}
                     fullWidth
@@ -571,10 +629,10 @@ function AddProducts({ handleClose }) {
                     id="outlined-basic"
                     placeholder=" Add Description "
                     variant="outlined"
-                  />
+                  /> */}
                 </div>
 
-                <div style={{ paddingTop: 20 }}>
+                <div style={{ paddingTop: 100 }}>
                   <Button
                     variant="outlined"
                     style={{ marginRight: "10px" }}

@@ -159,6 +159,21 @@ exports.getAllCoupons = async (req, res) => {
   }
 };
 
+// Get coupons for client
+exports.clientCoupons = async (req, res) => {
+  try {
+    const r = await Coupon.find().limit(5);
+    console.log(r);
+
+    // // Filter out expired coupons
+    // const validCoupons = coupons.filter(coupon => coupon.expiryDate >= new Date());
+
+    res.status(200).json({ coupons: r });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // Get a coupon by its total percentage or amount of discount
 exports.getCouponByDiscount = async (req, res) => {
   try {

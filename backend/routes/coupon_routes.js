@@ -26,4 +26,7 @@ router.get('/discount', couponController.getCouponByDiscount);
 // Get all coupons
 router.get('/all', couponController.getAllCoupons);
 
+// Get client coupons
+router.get('/to', couponController.clientCoupons);
+
 module.exports = router;

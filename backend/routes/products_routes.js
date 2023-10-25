@@ -34,6 +34,12 @@ router.post(
   "/filter/products/multi_category",
   Product_Controllers.multiCategory
 );
+
+router.post(
+  "/rec",
+  Product_Controllers.recommended
+);
+
 router.get(
   "/search/in/products",
   paginationMiddleware(),

@@ -69,6 +69,7 @@
     "react-hook-form": "^7.33.1",
     "react-html-table-to-excel": "^2.0.0",
     "react-json-to-csv": "^1.2.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "simplebar": "^5.3.8",
