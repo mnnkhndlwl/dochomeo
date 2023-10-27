@@ -467,12 +467,12 @@ const recommended = async (req, res) => {
   try {
     const { category } = req.body;
 
-    if (category.length <= 0) {
-      const findResult = await Products_Schema.find({}).limit(10).sort({ createdAt: -1 });
-      return res.status(200).send({
-        allProducts: findResult,
-      });
-    }
+    // if (category.length <= 0) {
+    //   const findResult = await Products_Schema.find({}).limit(10).sort({ createdAt: -1 });
+    //   return res.status(200).send({
+    //     allProducts: findResult,
+    //   });
+    // }
 
     // console.log(category);
 
