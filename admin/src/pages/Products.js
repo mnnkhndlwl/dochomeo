@@ -166,10 +166,10 @@ const headCells = [
   // },
 
   {
-    id: "quantity",
+    id: 'quantity',
     numeric: false,
     disablePadding: false,
-    label: "Quantity",
+    label: 'Quantity',
   },
   {
     id: "price",
@@ -426,7 +426,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [filterName, setFilterName] = useState("");
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const ref = useRef(null);
   const ref2 = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -478,18 +478,12 @@ export default function EnhancedTable() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/all/products?page=${
-          page + 1
-        }&size=${rowsPerPage}`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/all/productsadmin`, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res);
         setData(res?.data?.allProducts);
-        console.log(res?.data?.allProducts);
         setProductCount(res?.data?.getProductsCount);
         setCatgoryFilter(res?.data?.categoryForFilter);
         setProductStatusFilter(res?.data?.getAllProductStatus);
@@ -499,27 +493,6 @@ export default function EnhancedTable() {
         console.log(err);
       });
   }, [render]);
-
-  async function pr() {
-    setLoading(true);
-    axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/all/products?page=${page}&size=${rowsPerPage}`,
-        {
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        setData(res?.data?.allProducts);
-        console.log(res?.data?.allProducts);
-       // setProductCount(res?.data?.getProductsCount);
-        //setCatgoryFilter(res?.data?.categoryForFilter);
-        //setProductStatusFilter(res?.data?.getAllProductStatus);
-        setLoading(false);
-      });
-  }
-
   //========================= GET ALL PRODUCTS =========================
 
   //======================== FILTER FOR PRODUCTS ========================
@@ -562,13 +535,13 @@ export default function EnhancedTable() {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/search/in/products?page=${page}&size=${rowsPerPage}&search=${searchValue}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/search/in/products?search=${searchValue}`,
         { withCredentials: true }
       )
       .then((res) => {
         console.log(res);
-        setData(res?.data?.result);
-        setProductCount(res?.data?.count);
+        setData(res?.data);
+        setProductCount(res?.data?.length);
         setLoading(false);
       })
       .catch((err) => {
@@ -698,14 +671,11 @@ export default function EnhancedTable() {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    setRowsPerPage(rowsPerPage);
-    pr();
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(page);
-    pr();
+    setPage(0);
   };
 
   const handleChangeDense = (event) => {
@@ -716,7 +686,7 @@ export default function EnhancedTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, page * rowsPerPage - productCount) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
@@ -1572,12 +1542,7 @@ export default function EnhancedTable() {
                       <TableCell  style={{textTransform:'capitalize'}} align="center">{row.product_sale_price}</TableCell> */}
                         {/* <TableCell style={{textTransform:'capitalize'}}  align="center">{row.product_gst}</TableCell> */}
 
-                        <TableCell
-                          style={{ textTransform: "capitalize" }}
-                          align="left"
-                        >
-                          {row.quantity}
-                        </TableCell>
+                        <TableCell style={{textTransform:'capitalize'}}  align="left">{row.quantity}</TableCell>
                         <TableCell
                           style={{ textTransform: "capitalize" }}
                           align="left"
