@@ -145,6 +145,34 @@ const createProducts = async (req, res) => {
   }
 };
 
+// get all products for admin
+// get all products
+const getAllProductsAdmin = async (req, res) => {
+  try {
+   // const { startIndex, endIndex, page } = req.pagination;
+    const getProductsCount = await Products_Schema.find({}).count();
+    const categoryForFilter = await Brands_Schema.aggregate([
+      { $group: { _id: "$main_category_name" } },
+    ]);
+    const all_category_for_filter = await Brands_Schema.find({});
+    const allProducts = await Products_Schema.find({}).sort({ createdAt: -1 });
+    // console.log(startIndex);
+    // console.log(endIndex);
+    res.status(200).send({
+      allProducts: allProducts,
+    //  page: page,
+      count: allProducts.length,
+      getProductsCount: getProductsCount,
+      getAllProductStatus: product_status,
+      categoryForFilter: categoryForFilter,
+      all_category_for_filter: all_category_for_filter,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong !!");
+  }
+};
+
 // get all products
 const getAllProducts = async (req, res) => {
   try {
@@ -660,6 +688,7 @@ const removeTrendingProducts = async (req, res) => {
 exports.createProducts = createProducts;
 exports.multiCategory = multiCategory;
 exports.getAllProducts = getAllProducts;
+exports.getAllProductsAdmin = getAllProductsAdmin;
 exports.getproductById = getproductById;
 exports.editProduct = editProduct;
 exports.deleteProducts = deleteProducts;

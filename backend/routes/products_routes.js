@@ -21,6 +21,13 @@ router.get(
   paginationMiddleware(),
   Product_Controllers.getAllProducts
 );
+
+// all products routes
+router.get(
+  "/all/productsadmin",
+  Product_Controllers.getAllProductsAdmin
+);
+
 router.get(
   "/get/single/product/:product_id",
   Product_Controllers.getproductById
