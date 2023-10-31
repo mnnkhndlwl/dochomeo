@@ -535,13 +535,13 @@ export default function EnhancedTable() {
     setLoading(true);
     await axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/search/in/products?search=${searchValue}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/admin/search/in/products?search=${searchValue}`,
         { withCredentials: true }
       )
       .then((res) => {
         console.log(res);
-        setData(res?.data);
-        setProductCount(res?.data?.length);
+        setData(res?.data?.result);
+        setProductCount(res?.data?.count);
         setLoading(false);
       })
       .catch((err) => {
