@@ -34,7 +34,6 @@ router.get(
 );
 router.get(
   "/filter/products",
-  paginationMiddleware(),
   Product_Controllers.filterProducts
 );
 router.post(
@@ -45,6 +44,11 @@ router.post(
 router.post(
   "/rec",
   Product_Controllers.recommended
+);
+
+router.get(
+  "/admin/search/in/products",
+  Product_Controllers.adminSearchProducts
 );
 
 router.get(
