@@ -187,6 +187,8 @@ const updateOrders = async (req, res) => {
 const deleteOrderById = async (req, res) => {
   try {
     const orderId = req.params.id; // Assuming you pass the order ID as a route parameter
+
+    console.log("orderid ===============================>",orderId);
     
     // Check if orderId is provided
     if (!orderId) {

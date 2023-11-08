@@ -23,28 +23,19 @@ router.get(
 );
 
 // all products routes
-router.get(
-  "/all/productsadmin",
-  Product_Controllers.getAllProductsAdmin
-);
+router.get("/all/productsadmin", Product_Controllers.getAllProductsAdmin);
 
 router.get(
   "/get/single/product/:product_id",
   Product_Controllers.getproductById
 );
-router.get(
-  "/filter/products",
-  Product_Controllers.filterProducts
-);
+router.get("/filter/products", Product_Controllers.filterProducts);
 router.post(
   "/filter/products/multi_category",
   Product_Controllers.multiCategory
 );
 
-router.post(
-  "/rec",
-  Product_Controllers.recommended
-);
+router.post("/rec", Product_Controllers.recommended);
 
 router.get(
   "/admin/search/in/products",
@@ -80,5 +71,12 @@ router.patch(
 router.post("/add/new/product", Product_Controllers.createProducts);
 router.delete("/delete/product", Product_Controllers.deleteProducts);
 router.get("/gethome", Product_Controllers.homeProducts);
+
+//get products in website by filter
+router.get(
+  "/filter",
+  paginationMiddleware(),
+  Product_Controllers.getAllProductsFilter
+);
 
 module.exports = router;

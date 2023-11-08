@@ -200,6 +200,35 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+// get all products for filter in website
+const getAllProductsFilter = async (req, res) => {
+  try {
+    const filter = req.query.filter;
+    const { startIndex, endIndex, page } = req.pagination;
+    const getProductsCount = await Products_Schema.find({ product_main_category:filter }).count();
+    const categoryForFilter = await Brands_Schema.aggregate([
+      { $group: { _id: "$main_category_name" } },
+    ]);
+    const all_category_for_filter = await Brands_Schema.find({});
+    const allProducts = await Products_Schema.find({ product_main_category:filter }).sort({ createdAt: -1 });
+    console.log(startIndex);
+    console.log(endIndex);
+    res.status(200).send({
+      allProducts: allProducts.slice(startIndex, endIndex),
+      page: page,
+      count: allProducts.length,
+      getProductsCount: getProductsCount,
+      getAllProductStatus: product_status,
+      categoryForFilter: categoryForFilter,
+      all_category_for_filter: all_category_for_filter,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong !!");
+  }
+};
+
+
 // get product by id
 const getproductById = async (req, res) => {
   const productId = req.params.product_id;
@@ -754,3 +783,4 @@ exports.editReview = editReview;
 exports.homeProducts = homeProducts;
 exports.recommended = recommended;
 exports.adminSearchProducts = adminSearchProducts;
+exports.getAllProductsFilter = getAllProductsFilter;
