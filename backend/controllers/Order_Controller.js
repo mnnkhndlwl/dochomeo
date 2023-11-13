@@ -5,12 +5,26 @@ const order_status = require("../utils/configs/order_status");
 const { v4: uuidv4 } = require("uuid");
 const generateOrderId = require("order-id")("key");
 const Products_Schema = require("../modals/Products");
-
+const axios = require("axios");
 const Users_Schema = require("../modals/Users");
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Months are zero-indexed
+  const year = date.getFullYear();
+
+  // Pad single-digit day and month with leading zeros
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+
+  return `${year}-${formattedMonth}-${formattedDay}`;
+};  
+
 
 // create new order
 const createNewOrder = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     // const getOrdersCount = await Orders_Schema.find().count()
     // console.log("order_00"+(getOrdersCount+1))
@@ -19,15 +33,16 @@ const createNewOrder = async (req, res) => {
     const { jwt } = req.cookies;
 
     if (!jwt) {
+      console.log("nahi hai");
       return res.send("Please Login");
     }
 
     const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
-    console.log(_id);
+   // console.log(_id);
 
     const user = await Users_Schema.findById(_id.id);
     const getOrderId = "order-" + generateOrderId.generate();
-    console.log(getOrderId);
+    //console.log(getOrderId);
     const create = new Orders_Schema({
       order_id: getOrderId,
       customer_phone_number: user.phone_number,
@@ -47,12 +62,88 @@ const createNewOrder = async (req, res) => {
     await updateProductQuantities(req.body.products);
 
     const result = await create.save();
+    console.log("result------",result);
 
-    res.status(200).send({
-      status: true,
-      message: "order created successfully !!",
-      result: result,
-    });
+    // <******************************** shiprocket integration *******************************************************>
+    const auth = await axios.post(
+      "https://apiv2.shiprocket.in/v1/external/auth/login",
+      {
+        email: "mnn@test.com",
+        password: "Test@1234",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        maxBodyLength: Infinity,
+      }
+    );
+
+    const authToken = auth?.data?.token;
+
+    console.log("authtoken", authToken);
+
+    const newArray = create?.products?.map((item) => ({
+      name: item.name,
+      sku: item.code,
+      units: item.cartQuantity,
+      selling_price: item.price.toString(), // Convert price to string
+      discount: "",
+      tax: "",
+      hsn: 441122,
+    }));
+
+    const numericPrice = parseFloat(
+      create?.total_amount.replace(/[^\d.]/g, "")
+    );
+
+    const shipping = await axios.post(
+      "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc",
+      {
+        order_id: create?.order_id,
+        order_date: formatDate(result?.createdAt),
+        billing_customer_name: result?.customer_name,
+        billing_last_name: "",
+        billing_address: result?.shipping_address,
+        billing_city: req.body?.town,
+        billing_pincode: result?.pincode,
+        billing_state: result?.state,
+        billing_country: "India",
+        billing_email: result?.customer_email,
+        billing_phone: result?.customer_phone_number,
+        shipping_is_billing: true,
+        order_items: newArray,
+        payment_method: "prepaid",
+        sub_total: numericPrice,
+        length: 10,
+        breadth: 15,
+        height: 20,
+        weight: 0.5,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        maxBodyLength: Infinity,
+      }
+    );
+    console.log(shipping);
+    
+    if (shipping?.status !== parseInt(200)) {
+      await create.delete();
+      return res.status(500).send({
+        status: false,
+        message: "shipping error",
+        result: result,
+      });
+    } 
+      res.status(200).send({
+        status: true,
+        message: "order created successfully !!",
+        result: result,
+      });
+    
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong !!");
@@ -69,7 +160,9 @@ const updateProductQuantities = async (cart) => {
       if (product) {
         // Check if there's enough quantity in stock
         if (product.quantity < cartItem.cartQuantity) {
-          throw new Error(`Not enough quantity in stock for product with ID: ${cartItem.productID}`);
+          throw new Error(
+            `Not enough quantity in stock for product with ID: ${cartItem.productID}`
+          );
         }
 
         // Decrease the product quantity based on the quantity ordered
@@ -81,10 +174,9 @@ const updateProductQuantities = async (cart) => {
     }
   } catch (error) {
     console.log(error);
-  //  throw error; // Re-throw the error to be handled in the calling function (createNewOrder)
+    //  throw error; // Re-throw the error to be handled in the calling function (createNewOrder)
   }
 };
-
 
 // get all orders
 const getAllOrders = async (req, res) => {
@@ -188,11 +280,13 @@ const deleteOrderById = async (req, res) => {
   try {
     const orderId = req.params.id; // Assuming you pass the order ID as a route parameter
 
-    console.log("orderid ===============================>",orderId);
-    
+    console.log("orderid ===============================>", orderId);
+
     // Check if orderId is provided
     if (!orderId) {
-      return res.status(400).send({ message: "Order ID is required", status: false });
+      return res
+        .status(400)
+        .send({ message: "Order ID is required", status: false });
     }
 
     const deleteOrder = await Orders_Schema.findByIdAndDelete(orderId);
@@ -200,7 +294,10 @@ const deleteOrderById = async (req, res) => {
     if (!deleteOrder) {
       return res
         .status(404)
-        .send({ message: "Order not found or could not be deleted", status: false });
+        .send({
+          message: "Order not found or could not be deleted",
+          status: false,
+        });
     }
 
     return res
@@ -211,7 +308,6 @@ const deleteOrderById = async (req, res) => {
     res.status(500).send({ message: "Internal server error", status: false });
   }
 };
-
 
 // DELETE ORDER's
 const deleteOrders = async (req, res) => {
