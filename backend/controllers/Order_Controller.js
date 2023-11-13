@@ -68,8 +68,8 @@ const createNewOrder = async (req, res) => {
     const auth = await axios.post(
       "https://apiv2.shiprocket.in/v1/external/auth/login",
       {
-        email: "mnn@test.com",
-        password: "Test@1234",
+        email: "contact.dochomoeo@gmail.com",
+        password: "Dochomoeo@123",
       },
       {
         headers: {
