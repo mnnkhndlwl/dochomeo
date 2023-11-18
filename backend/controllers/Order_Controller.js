@@ -215,7 +215,7 @@ const getAllOrdersByUserId = async (req, res) => {
 
     if (!user) {
       return res.send({
-        success: false,
+        success: false, 
         message: "User Not Found",
       });
     }
@@ -472,26 +472,30 @@ const newPayment = async (req,res) => {
       const options = {
           method: 'POST',
           url: prod_URL,
-          headers: {
-              accept: 'application/json',
+          headers: { 
+               accept: 'application/json',
               'Content-Type': 'application/json',
               'X-VERIFY': checksum
           },
           data: {
-              request: payloadMain
+              request: payloadMain 
           }
       };
 
-     await axios.request(options).then(function (response) {
+      axios.request(options).then(function (response) { 
          // console.log(response.data.data);
          console.log(response.data.data.instrumentResponse.redirectInfo.url);
-          return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+         return res.status(200).send({
+          link: response.data.data.instrumentResponse.redirectInfo.url
+         });
+       //return res.writeHead(301, { "Location": response.data.data.instrumentResponse.redirectInfo.url});
       })
       .catch(function (error) {
-         // console.error(error);
+          console.error(error);
       });
 
-  } catch (error) {
+  } catch (error) { 
+    console.log(error);
       res.status(500).send({
           message: error.message,
           success: false
@@ -505,7 +509,7 @@ console.log(req.params);
   const merchantTransactionId = req.params.merchantTransactionId;
   const merchantId = process.env.Merchant_Id;
 
-  const keyIndex = 1;
+  const keyIndex = 1; 
   const string = `/pg/v1/status/${merchantId}/${merchantTransactionId}` + process.env.PHOENPE;
   const sha256 = crypto.createHash('sha256').update(string).digest('hex');
   const checksum = sha256 + "###" + keyIndex;
@@ -514,9 +518,9 @@ console.log(req.params);
   method: 'GET',
   url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
   headers: {
-      accept: 'application/json',
+      'accept': 'application/json',
       'Content-Type': 'application/json',
-      'X-VERIFY': checksum,
+      'X-VERIFY': checksum, 
       'X-MERCHANT-ID': `${merchantId}`
   }
   };
