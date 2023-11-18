@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 const generateOrderId = require("order-id")("key");
 const Products_Schema = require("../modals/Products");
 const axios = require("axios");
+const crypto =  require('crypto');
 const Users_Schema = require("../modals/Users");
 
 const formatDate = (dateString) => {
@@ -47,6 +48,7 @@ const createNewOrder = async (req, res) => {
       order_id: getOrderId,
       customer_phone_number: user.phone_number,
       customer_id: _id.id,
+      tid: req.body.tid,
       customer_name: req.body.customer_name,
       total_amount: req.body.total_amount,
       customer_email: req.body.customer_email?.toLowerCase(),
@@ -59,7 +61,7 @@ const createNewOrder = async (req, res) => {
       customer_business: req.body?.customer_business,
     });
 
-    await updateProductQuantities(req.body.products);
+   await updateProductQuantities(req.body.products);
 
     const result = await create.save();
     console.log("result------",result);
@@ -441,6 +443,99 @@ const filterForOrders = async (req, res) => {
   }
 };
 
+//<----------------------------------------------------HANDLING PAYMENTS -------------------------------------------------->//
+
+const newPayment = async (req,res) => {
+  try {
+     const merchantTransactionId = req.body.tid;
+      const data = {
+          merchantId: process.env.Merchant_Id,
+          merchantTransactionId: merchantTransactionId,
+          merchantUserId: req.body.tuid,
+          name: req.body.name,
+          amount: 1 * 100,
+          redirectUrl: `http://localhost:5000/api/order/status/${merchantTransactionId}`,
+          redirectMode: 'POST',
+          mobileNumber: req.body.number,
+          paymentInstrument: {
+              type: 'PAY_PAGE'
+          }
+      };
+      const payload = JSON.stringify(data);
+      const payloadMain = Buffer.from(payload).toString('base64');
+      const keyIndex = 1;
+      const string = payloadMain + '/pg/v1/pay' + process.env.PHOENPE;
+      const sha256 = crypto.createHash('sha256').update(string).digest('hex');
+      const checksum = sha256 + '###' + keyIndex;
+
+      const prod_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay"
+      const options = {
+          method: 'POST',
+          url: prod_URL,
+          headers: {
+              accept: 'application/json',
+              'Content-Type': 'application/json',
+              'X-VERIFY': checksum
+          },
+          data: {
+              request: payloadMain
+          }
+      };
+
+     await axios.request(options).then(function (response) {
+         // console.log(response.data.data);
+         console.log(response.data.data.instrumentResponse.redirectInfo.url);
+          return res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+      })
+      .catch(function (error) {
+         // console.error(error);
+      });
+
+  } catch (error) {
+      res.status(500).send({
+          message: error.message,
+          success: false
+      })
+  }
+}
+
+const checkStatus = async(req, res) => {
+console.log(req.params);
+//console.log("body", req);
+  const merchantTransactionId = req.params.merchantTransactionId;
+  const merchantId = process.env.Merchant_Id;
+
+  const keyIndex = 1;
+  const string = `/pg/v1/status/${merchantId}/${merchantTransactionId}` + process.env.PHOENPE;
+  const sha256 = crypto.createHash('sha256').update(string).digest('hex');
+  const checksum = sha256 + "###" + keyIndex;
+
+  const options = {
+  method: 'GET',
+  url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${merchantTransactionId}`,
+  headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-VERIFY': checksum,
+      'X-MERCHANT-ID': `${merchantId}`
+  }
+  };
+
+  // CHECK PAYMENT TATUS
+   axios.request(options).then(async(response) => {
+      if (response.data.success === true) {
+          const url = `http://localhost:3000/profile`
+          return res.redirect(url)
+      } else {
+          const url = `http://localhost:3000/failure`
+          return res.redirect(url)
+      }
+  })
+  .catch((error) => {
+     console.error(error);
+  });
+};
+
 exports.createNewOrder = createNewOrder;
 exports.getAllOrders = getAllOrders;
 exports.searchInOrders = searchInOrders;
@@ -450,3 +545,5 @@ exports.updateOrders = updateOrders;
 exports.deleteOrders = deleteOrders;
 exports.getAllOrdersByUserId = getAllOrdersByUserId;
 exports.deleteOrderById = deleteOrderById;
+exports.checkStatus = checkStatus;
+exports.newPayment = newPayment;

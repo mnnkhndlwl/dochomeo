@@ -5,6 +5,9 @@ const Order_Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tid: {
+      type: String
+    },
     paymentType: {
       type: String,
       default: "-"

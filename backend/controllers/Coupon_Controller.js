@@ -163,7 +163,7 @@ exports.getAllCoupons = async (req, res) => {
 exports.clientCoupons = async (req, res) => {
   try {
     const r = await Coupon.find().limit(5);
-    console.log(r);
+   // console.log(r);
 
     // // Filter out expired coupons
     // const validCoupons = coupons.filter(coupon => coupon.expiryDate >= new Date());
