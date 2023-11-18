@@ -468,13 +468,14 @@ const newPayment = async (req,res) => {
       const sha256 = crypto.createHash('sha256').update(string).digest('hex');
       const checksum = sha256 + '###' + keyIndex;
 
-      const prod_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay"
+      const prod_URL ="https://api.phonepe.com/apis/hermes/pg/v1/pay"
       const options = {
           method: 'POST',
           url: prod_URL,
           headers: {
               accept: 'application/json',
               'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin' : "*",
               'X-VERIFY': checksum
           },
           data: {
@@ -512,7 +513,7 @@ console.log(req.params);
 
   const options = {
   method: 'GET',
-  url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${merchantId}/${merchantTransactionId}`,
+  url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
   headers: {
       accept: 'application/json',
       'Content-Type': 'application/json',
