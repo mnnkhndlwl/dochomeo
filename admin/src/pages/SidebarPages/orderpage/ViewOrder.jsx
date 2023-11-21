@@ -697,7 +697,7 @@ function ViewOrder({ handleClose, orderId }) {
                   }}
                 >
                   {" "}
-                  Payment-ID : {orderDetail?.order_id}
+                  Payment-ID : {orderDetail?.tid}
                 </p>
               </div>
               <div className="flex">

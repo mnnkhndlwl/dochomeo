@@ -205,7 +205,7 @@ const registerVerify = async (req, res) => {
     });
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, //5 hrs
+      maxAge: Math.floor(Date.now() / 1000) + (365 * 24 * 60 * 60), //5 hrs
       sameSite: "none",
       secure: true,
     });
@@ -408,7 +408,7 @@ const verifyOTPRegLog = async (req, res) => {
 
     res.cookie("jwt", token, {
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, //5 hrs
+      maxAge: Math.floor(Date.now() / 1000) + (365 * 24 * 60 * 60), //5 hrs
       sameSite: "none",
       secure: true,
     });
@@ -437,7 +437,7 @@ const fetchLoginUserData = async (req, res) => {
     const { jwt } = req.cookies;
 
     if (!jwt) {
-      return res.send("Please Login");
+      return res.status(500).send({ message: "Session expired"});
     }
 
     const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);

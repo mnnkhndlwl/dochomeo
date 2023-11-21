@@ -1,12 +1,11 @@
 const express = require("express")
 const router = express.Router();
-const Order_Controllers = require("../controllers/Order_Controller")
-
+const Order_Controllers = require("../controllers/Order_Controller");
 
 router.post('/create/new/order',Order_Controllers.createNewOrder);
 router.get("/get/all/orders/",Order_Controllers.getAllOrders);
 
-router.get("/get/all/orders/user",Order_Controllers.getAllOrdersByUserId);
+router.post("/get/all/orders/user",Order_Controllers.getAllOrdersByUserId);
 
 router.get("/search/in/orders",Order_Controllers.searchInOrders);
 router.get("/filter/by/orders",Order_Controllers.filterForOrders);

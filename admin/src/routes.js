@@ -18,7 +18,7 @@ import AvailableDoctors from './pages/AvailableDoctors';
 import DoctorEnquiry from "./pages/DoctorsEnquiry"
 import WholesaleEnquiry from "./pages/WholesaleEnquiry"
 import EditDoctor from './pages/SidebarPages/doctorpage/EditDoctor';
-
+import Delivery from "./pages/Delivery";
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +43,7 @@ export default function Router() {
      <Route path="/dashboard/wholesale-enquiries" element={ <DashboardLayout Component={<WholesaleEnquiry />} />} />
      {/* <Route path="/dashboard/vendor" element={ <DashboardLayout Component={<Vendor/>} />}/> */}
      <Route path="/dashboard/categories" element={ <DashboardLayout Component={<Category/>} />} />
+     <Route path="/dashboard/delivery" element={ <DashboardLayout Component={<Delivery />} />} />
      <Route path="/dashboard/brands" element={ <DashboardLayout Component={<Brand />} />} />
      <Route path="/dashboard/banners" element={ <DashboardLayout Component={<Banners/>} />} />
      <Route path="/dashboard/mobilebanners" element={ <DashboardLayout Component={<MobileBanners/>} />} />

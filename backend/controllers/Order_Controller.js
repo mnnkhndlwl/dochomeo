@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 const generateOrderId = require("order-id")("key");
 const Products_Schema = require("../modals/Products");
 const axios = require("axios");
-const crypto =  require('crypto');
+const crypto = require("crypto");
 const Users_Schema = require("../modals/Users");
 
 const formatDate = (dateString) => {
@@ -20,8 +20,7 @@ const formatDate = (dateString) => {
   const formattedMonth = month < 10 ? `0${month}` : month;
 
   return `${year}-${formattedMonth}-${formattedDay}`;
-};  
-
+};
 
 // create new order
 const createNewOrder = async (req, res) => {
@@ -31,23 +30,31 @@ const createNewOrder = async (req, res) => {
     // console.log("order_00"+(getOrdersCount+1))
     // const ordersCustomId = "order_00"+(getOrdersCount+1)
     // const getOrderId = uuidv4();
-    const { jwt } = req.cookies;
+    // const { jwt } = req.cookies;
 
-    if (!jwt) {
-      console.log("nahi hai");
-      return res.send("Please Login");
+    // if (!jwt) {
+    //   console.log("nahi hai");
+    //   return res.status(500).send({ message: "Please Login" });
+    // }
+    const userID = req.body?.customer_id;
+
+    if (!userID) {
+      return res.send({
+        success: false,
+        message: "Login and Try Again !!",
+      });
     }
 
-    const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
-   // console.log(_id);
+    // const _id = await Utils.verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
+    // console.log(_id);
 
-    const user = await Users_Schema.findById(_id.id);
+    const user = await Users_Schema.findById(userID);
     const getOrderId = "order-" + generateOrderId.generate();
     //console.log(getOrderId);
     const create = new Orders_Schema({
       order_id: getOrderId,
       customer_phone_number: user.phone_number,
-      customer_id: _id.id,
+      customer_id: userID,
       tid: req.body.tid,
       customer_name: req.body.customer_name,
       total_amount: req.body.total_amount,
@@ -61,10 +68,10 @@ const createNewOrder = async (req, res) => {
       customer_business: req.body?.customer_business,
     });
 
-   await updateProductQuantities(req.body.products);
+    await updateProductQuantities(req.body.products);
 
     const result = await create.save();
-    console.log("result------",result);
+    console.log("result------", result);
 
     // <******************************** shiprocket integration *******************************************************>
     const auth = await axios.post(
@@ -131,7 +138,7 @@ const createNewOrder = async (req, res) => {
       }
     );
     console.log(shipping);
-    
+
     if (shipping?.status !== parseInt(200)) {
       await create.delete();
       return res.status(500).send({
@@ -139,13 +146,12 @@ const createNewOrder = async (req, res) => {
         message: "shipping error",
         result: result,
       });
-    } 
-      res.status(200).send({
-        status: true,
-        message: "order created successfully !!",
-        result: result,
-      });
-    
+    }
+    res.status(200).send({
+      status: true,
+      message: "order created successfully !!",
+      result: result,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong !!");
@@ -199,23 +205,32 @@ const getAllOrders = async (req, res) => {
 // get all orders
 const getAllOrdersByUserId = async (req, res) => {
   try {
-    const { jwt } = req.cookies;
+    // const { jwt } = req.cookies;
 
-    if (!jwt) {
+    // if (!jwt) {
+    //   return res.send({
+    //     success: false,
+    //     message: "Login and Try Again !!",
+    //   });
+    // }
+
+    // const token = verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
+
+    const userID = req.body?.user;
+
+    if (!userID) {
       return res.send({
         success: false,
         message: "Login and Try Again !!",
       });
     }
 
-    const token = verifying_Jwt(jwt, process.env.JWT_TOKEN_SECRET);
-
-    const user = await Users_Schema.findById(token.id);
+    const user = await Users_Schema.findById(userID);
     console.log(user);
 
     if (!user) {
       return res.send({
-        success: false, 
+        success: false,
         message: "User Not Found",
       });
     }
@@ -294,12 +309,10 @@ const deleteOrderById = async (req, res) => {
     const deleteOrder = await Orders_Schema.findByIdAndDelete(orderId);
 
     if (!deleteOrder) {
-      return res
-        .status(404)
-        .send({
-          message: "Order not found or could not be deleted",
-          status: false,
-        });
+      return res.status(404).send({
+        message: "Order not found or could not be deleted",
+        status: false,
+      });
     }
 
     return res
@@ -445,99 +458,104 @@ const filterForOrders = async (req, res) => {
 
 //<----------------------------------------------------HANDLING PAYMENTS -------------------------------------------------->//
 
-const newPayment = async (req,res) => {
+const newPayment = async (req, res) => {
   try {
-     const merchantTransactionId = req.body.tid;
-      const data = {
-          merchantId: process.env.Merchant_Id,
-          merchantTransactionId: merchantTransactionId,
-          merchantUserId: req.body.tuid,
-          name: req.body.name,
-          amount: 1 * 100,
-          redirectUrl: `https://shark-app-neruo.ondigitalocean.app/api/order/status/${merchantTransactionId}`,
-          redirectMode: 'POST',
-          mobileNumber: req.body.number,
-          paymentInstrument: {
-              type: 'PAY_PAGE'
-          }
-      };
-      const payload = JSON.stringify(data);
-      const payloadMain = Buffer.from(payload).toString('base64');
-      const keyIndex = 1;
-      const string = payloadMain + '/pg/v1/pay' + process.env.PHOENPE;
-      const sha256 = crypto.createHash('sha256').update(string).digest('hex');
-      const checksum = sha256 + '###' + keyIndex;
+    const merchantTransactionId = req.body.tid;
+    const data = {
+      merchantId: process.env.Merchant_Id,
+      merchantTransactionId: merchantTransactionId,
+      merchantUserId: req.body.tuid,
+      name: req.body.name,
+      amount: 1 * 100,
+      redirectUrl: `https://shark-app-neruo.ondigitalocean.app/api/order/status/${merchantTransactionId}`,
+      redirectMode: "POST",
+      mobileNumber: req.body.number,
+      paymentInstrument: {
+        type: "PAY_PAGE",
+      },
+    };
+    const payload = JSON.stringify(data);
+    const payloadMain = Buffer.from(payload).toString("base64");
+    const keyIndex = 1;
+    const string = payloadMain + "/pg/v1/pay" + process.env.PHOENPE;
+    const sha256 = crypto.createHash("sha256").update(string).digest("hex");
+    const checksum = sha256 + "###" + keyIndex;
 
-      const prod_URL ="https://api.phonepe.com/apis/hermes/pg/v1/pay"
-      const options = {
-          method: 'POST',
-          url: prod_URL,
-          headers: { 
-               accept: 'application/json',
-              'Content-Type': 'application/json',
-              'X-VERIFY': checksum
-          },
-          data: {
-              request: payloadMain 
-          }
-      };
+    const prod_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+    const options = {
+      method: "POST",
+      url: prod_URL,
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        "X-VERIFY": checksum,
+      },
+      data: {
+        request: payloadMain,
+      },
+    };
 
-      axios.request(options).then(function (response) { 
-         // console.log(response.data.data);
-         console.log(response.data.data.instrumentResponse.redirectInfo.url);
-         return res.status(200).send({
-          link: response.data.data.instrumentResponse.redirectInfo.url
-         });
-       //return res.writeHead(301, { "Location": response.data.data.instrumentResponse.redirectInfo.url});
+    axios
+      .request(options)
+      .then(function (response) {
+        // console.log(response.data.data);
+        console.log(response.data.data.instrumentResponse.redirectInfo.url);
+        return res.status(200).send({
+          link: response.data.data.instrumentResponse.redirectInfo.url,
+        });
+        //return res.writeHead(301, { "Location": response.data.data.instrumentResponse.redirectInfo.url});
       })
       .catch(function (error) {
-          console.error(error);
+        console.error(error);
       });
-
-  } catch (error) { 
+  } catch (error) {
     console.log(error);
-      res.status(500).send({
-          message: error.message,
-          success: false
-      })
+    res.status(500).send({
+      message: error.message,
+      success: false,
+    });
   }
-}
+};
 
-const checkStatus = async(req, res) => {
-console.log(req.params);
-//console.log("body", req);
+const checkStatus = async (req, res) => {
+  console.log(req.params);
+  //console.log("body", req);
   const merchantTransactionId = req.params.merchantTransactionId;
   const merchantId = process.env.Merchant_Id;
 
-  const keyIndex = 1; 
-  const string = `/pg/v1/status/${merchantId}/${merchantTransactionId}` + process.env.PHOENPE;
-  const sha256 = crypto.createHash('sha256').update(string).digest('hex');
+  const keyIndex = 1;
+  const string =
+    `/pg/v1/status/${merchantId}/${merchantTransactionId}` +
+    process.env.PHOENPE;
+  const sha256 = crypto.createHash("sha256").update(string).digest("hex");
   const checksum = sha256 + "###" + keyIndex;
 
   const options = {
-  method: 'GET',
-  url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
-  headers: {
-      'accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-VERIFY': checksum, 
-      'X-MERCHANT-ID': `${merchantId}`
-  }
+    method: "GET",
+    url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
+    headers: {
+      accept: "application/json",
+      "Content-Type": "application/json",
+      "X-VERIFY": checksum,
+      "X-MERCHANT-ID": `${merchantId}`,
+    },
   };
 
   // CHECK PAYMENT TATUS
-   axios.request(options).then(async(response) => {
+  axios
+    .request(options)
+    .then(async (response) => {
       if (response.data.success === true) {
-          const url = `https://dochomoeo.com/profile`
-          return res.redirect(url)
+        const url = `https://dochomoeo.com/profile`;
+        return res.redirect(url);
       } else {
-          const url = `https://dochomoeo.com/failure`
-          return res.redirect(url)
+        const url = `https://dochomoeo.com/failure`;
+        return res.redirect(url);
       }
-  })
-  .catch((error) => {
-     console.error(error);
-  });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 exports.createNewOrder = createNewOrder;

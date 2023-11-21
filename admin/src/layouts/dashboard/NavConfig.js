@@ -71,9 +71,11 @@ const navConfig = [
     path: '/dashboard/wholesale-enquiries',
     icon: getIcon('fa-solid:boxes'),
   },
-
-
-  
+  {
+    title: 'Delivery Charges',
+    path: '/dashboard/delivery',
+    icon: getIcon('mdi:delivery-dining'),
+  },
   // {
   //   title: 'blog',
   //   path: '/dashboard/blog',
