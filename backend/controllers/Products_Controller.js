@@ -286,7 +286,7 @@ const homeProducts = async (req, res) => {
       bdata.map(async (i) => {
         const pr = await Products_Schema.find({
           product_main_category: i.main_category_name,
-        }).limit(10);
+        }).sort({ createdAt: -1 }).limit(10);
         data.push(pr);
       })
     );
@@ -308,9 +308,14 @@ const adminSearchProducts = async (req, res) => {
   let result;
   try {
     result = await Products_Schema.find({
-      product_main_category: { $regex: searchRegex },
+      product_brand: { $regex: searchRegex },
     }).sort({ createdAt: -1 });
 
+    if (!result.length > 0) {
+      result = await Products_Schema.find({
+        product_main_category: { $regex: searchRegex },
+      }).sort({ createdAt: -1 });
+    }
     if (!result.length > 0) {
       result = await Products_Schema.find({
         product_name: { $regex: searchRegex },
@@ -319,11 +324,6 @@ const adminSearchProducts = async (req, res) => {
     if (!result.length > 0) {
       result = await Products_Schema.find({
         product_code: { $regex: searchRegex },
-      }).sort({ createdAt: -1 });
-    }
-    if (!result.length > 0) {
-      result = await Products_Schema.find({
-        product_brand: { $regex: searchRegex },
       }).sort({ createdAt: -1 });
     }
 
@@ -354,9 +354,14 @@ const searchProducts = async (req, res) => {
   let result;
   try {
     result = await Products_Schema.find({
-      product_main_category: { $regex: searchRegex },
+      product_brand: { $regex: searchRegex },
     }).sort({ createdAt: -1 });
 
+    if (!result.length > 0) {
+      result = await Products_Schema.find({
+        product_main_category: { $regex: searchRegex },
+      }).sort({ createdAt: -1 });
+    }
     if (!result.length > 0) {
       result = await Products_Schema.find({
         product_name: { $regex: searchRegex },
@@ -365,11 +370,6 @@ const searchProducts = async (req, res) => {
     if (!result.length > 0) {
       result = await Products_Schema.find({
         product_code: { $regex: searchRegex },
-      }).sort({ createdAt: -1 });
-    }
-    if (!result.length > 0) {
-      result = await Products_Schema.find({
-        product_brand: { $regex: searchRegex },
       }).sort({ createdAt: -1 });
     }
 

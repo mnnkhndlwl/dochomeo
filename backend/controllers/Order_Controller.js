@@ -460,6 +460,7 @@ const filterForOrders = async (req, res) => {
 
 const newPayment = async (req, res) => {
   try {
+    console.log(req.body);
     const merchantTransactionId = req.body.tid;
     const data = {
       merchantId: process.env.Merchant_Id,
@@ -468,6 +469,7 @@ const newPayment = async (req, res) => {
       name: req.body.name,
       amount: 1 * 100,
       redirectUrl: `https://shark-app-neruo.ondigitalocean.app/api/order/status/${merchantTransactionId}`,
+    // redirectUrl: `http://localhost:5000/api/order/status/${merchantTransactionId}`,
       redirectMode: "POST",
       mobileNumber: req.body.number,
       paymentInstrument: {
@@ -506,10 +508,10 @@ const newPayment = async (req, res) => {
         //return res.writeHead(301, { "Location": response.data.data.instrumentResponse.redirectInfo.url});
       })
       .catch(function (error) {
-        console.error(error);
+        //console.error(error);
       });
   } catch (error) {
-    console.log(error);
+   // console.log(error);
     res.status(500).send({
       message: error.message,
       success: false,
@@ -546,7 +548,7 @@ const checkStatus = async (req, res) => {
     .request(options)
     .then(async (response) => {
       if (response.data.success === true) {
-        const url = `https://dochomoeo.com/profile`;
+        const url = `http://dochomoeo.com/process`;
         return res.redirect(url);
       } else {
         const url = `https://dochomoeo.com/failure`;
