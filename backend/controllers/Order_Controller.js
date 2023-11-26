@@ -462,12 +462,14 @@ const newPayment = async (req, res) => {
   try {
     console.log(req.body);
     const merchantTransactionId = req.body.tid;
+    const total = req.body.amount;
+    total*=100;
     const data = {
       merchantId: process.env.Merchant_Id,
       merchantTransactionId: merchantTransactionId,
       merchantUserId: req.body.tuid,
       name: req.body.name,
-      amount: 1 * 100,
+      amount: total,
       redirectUrl: `https://shark-app-neruo.ondigitalocean.app/api/order/status/${merchantTransactionId}`,
     // redirectUrl: `http://localhost:5000/api/order/status/${merchantTransactionId}`,
       redirectMode: "POST",
