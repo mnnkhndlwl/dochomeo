@@ -462,7 +462,7 @@ const newPayment = async (req, res) => {
   try {
     console.log(req.body);
     const merchantTransactionId = req.body.tid;
-    const total = req.body.amount;
+    var total = req.body.amount;
     total*=100;
     const data = {
       merchantId: process.env.Merchant_Id,
