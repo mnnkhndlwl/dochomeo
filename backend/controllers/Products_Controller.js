@@ -182,7 +182,17 @@ const getAllProducts = async (req, res) => {
       { $group: { _id: "$main_category_name" } },
     ]);
     const all_category_for_filter = await Brands_Schema.find({});
-    const allProducts = await Products_Schema.find({}).sort({ createdAt: -1 });
+    let allProducts;
+    if(parseInt(req.query.sort) === 0) {
+      allProducts = await Products_Schema.find({}).sort({ createdAt:-1 });
+    }
+    else if(parseInt(req.query.sort) === -1) {
+      allProducts = await Products_Schema.find({ }).sort({ product_sale_price :1 });
+    }
+    else if(parseInt(req.query.sort) === 1) {
+      allProducts = await Products_Schema.find({ }).sort({ product_sale_price: -1 });
+    }
+    // const allProducts = await Products_Schema.find({}).sort({ createdAt: -1 });
     console.log(startIndex);
     console.log(endIndex);
     res.status(200).send({
@@ -205,12 +215,21 @@ const getAllProductsFilter = async (req, res) => {
   try {
     const filter = req.query.filter;
     const { startIndex, endIndex, page } = req.pagination;
-    const getProductsCount = await Products_Schema.find({ product_main_category:filter }).count();
+    const getProductsCount = await Products_Schema.find({ product_brand:filter }).count();
     const categoryForFilter = await Brands_Schema.aggregate([
       { $group: { _id: "$main_category_name" } },
     ]);
     const all_category_for_filter = await Brands_Schema.find({});
-    const allProducts = await Products_Schema.find({ product_main_category:filter }).sort({ createdAt: -1 });
+    var allProducts;
+    if(parseInt(req.query.sort) === 0) {
+      allProducts = await Products_Schema.find({ product_brand:filter }).sort({ createdAt:-1 });
+    }
+    else if(parseInt(req.query.sort) === -1) {
+      allProducts = await Products_Schema.find({ product_brand:filter }).sort({ product_sale_price :1 });
+    }
+    else if(parseInt(req.query.sort) === 1) {
+      allProducts = await Products_Schema.find({ product_brand:filter }).sort({ product_sale_price: -1 });
+    }
     console.log(startIndex);
     console.log(endIndex);
     res.status(200).send({
