@@ -221,14 +221,23 @@ const getAllProductsFilter = async (req, res) => {
     ]);
     const all_category_for_filter = await Brands_Schema.find({});
     var allProducts;
-    if(parseInt(req.query.sort) === 0) {
+    if(parseInt(req.query.sort) === 0 && parseInt(req.query.iscat) !== 1 ) {
       allProducts = await Products_Schema.find({ product_brand:filter }).sort({ createdAt:-1 });
     }
-    else if(parseInt(req.query.sort) === -1) {
+    else if(parseInt(req.query.sort) === -1 && parseInt(req.query.iscat) !== 1) {
       allProducts = await Products_Schema.find({ product_brand:filter }).sort({ product_sale_price :1 });
     }
-    else if(parseInt(req.query.sort) === 1) {
+    else if(parseInt(req.query.sort) === 1 && parseInt(req.query.iscat) !== 1) {
       allProducts = await Products_Schema.find({ product_brand:filter }).sort({ product_sale_price: -1 });
+    }
+    else if(parseInt(req.query.sort) === 1 && parseInt(req.query.iscat) === 1) {
+      allProducts = await Products_Schema.find({ product_main_category:filter }).sort({ product_sale_price: -1 });
+    }
+    else if(parseInt(req.query.sort) === -1 && parseInt(req.query.iscat) === 1) {
+      allProducts = await Products_Schema.find({ product_main_category:filter }).sort({ product_sale_price :1 });
+    }
+    else if(parseInt(req.query.sort) === 0 && parseInt(req.query.iscat) === 1) {
+      allProducts = await Products_Schema.find({ product_main_category:filter }).sort({ createdAt :1 });
     }
     console.log(startIndex);
     console.log(endIndex);
