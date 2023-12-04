@@ -221,7 +221,13 @@ const getAllProductsFilter = async (req, res) => {
     ]);
     const all_category_for_filter = await Brands_Schema.find({});
     var allProducts;
-    if(parseInt(req.query.sort) === 0 && parseInt(req.query.iscat) !== 1 ) {
+    if(!parseInt(req.query.sort) && !parseInt(req.query.iscat)) {
+      allProducts = await Products_Schema.find({ product_brand:filter }).sort({ createdAt:-1 });
+    }
+    else if(!parseInt(req.query.sort) && parseInt(req.query.iscat) === 1) {
+      allProducts = await Products_Schema.find({ product_main_category:filter }).sort({ createdAt:-1 });
+    }
+    else if(parseInt(req.query.sort) === 0 && parseInt(req.query.iscat) !== 1 ) {
       allProducts = await Products_Schema.find({ product_brand:filter }).sort({ createdAt:-1 });
     }
     else if(parseInt(req.query.sort) === -1 && parseInt(req.query.iscat) !== 1) {
@@ -242,9 +248,9 @@ const getAllProductsFilter = async (req, res) => {
     console.log(startIndex);
     console.log(endIndex);
     res.status(200).send({
-      allProducts: allProducts.slice(startIndex, endIndex),
+      allProducts: allProducts?.slice(startIndex, endIndex),
       page: page,
-      count: allProducts.length,
+      count: allProducts?.length,
       getProductsCount: getProductsCount,
       getAllProductStatus: product_status,
       categoryForFilter: categoryForFilter,
